@@ -1,11 +1,8 @@
 import { Button } from "./ui/button"
-import { ArrowRight, Menu } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { LineShadowText } from "./line-shadow-text"
-import { ShimmerButton } from "./shimmer-button"
-import { useState } from "react"
 
 export default function HomePage() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const handleGetStarted = () => {
     window.location.href = '/login';
@@ -149,58 +146,13 @@ export default function HomePage() {
         </div>
       </div>
 
-      <header className="relative z-10 flex items-center justify-between px-4 sm:px-6 py-4 lg:px-12">
-        <div className="flex items-center space-x-2 pl-3 sm:pl-6 lg:pl-12">
-          <img src="/logo.png" alt="India Post" className="h-16 sm:h-20 lg:h-24 w-auto" />
-        </div>
-
-        <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
-          <a href="#" className="text-black/70 hover:text-black transition-colors text-sm lg:text-base">
-            Features
-          </a>
-          
-          <a href="#" className="text-black/70 hover:text-black transition-colors text-sm lg:text-base">
-            About us
-          </a>
-          <a href="#" className="text-black/70 hover:text-black transition-colors text-sm lg:text-base">
-            Contact
-          </a>
-        </nav>
-
-        <button className="md:hidden text-black p-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-          <Menu className="w-6 h-6" />
-        </button>
-
-        <ShimmerButton
-          onClick={handleGetStarted}
-          className="hidden md:flex bg-orange-500 hover:bg-orange-600 text-white px-4 lg:px-6 py-2 rounded-xl text-sm lg:text-base font-medium shadow-lg"
-        >
-          Login
-        </ShimmerButton>
+      <header className="relative z-10 w-full">
+        <img
+          src="/post copy.png"
+          alt="Header"
+          className="w-full h-auto object-contain"
+        />
       </header>
-
-      {mobileMenuOpen && (
-        <div className="md:hidden absolute top-16 left-0 right-0 bg-white/95 backdrop-blur-sm border-b border-black/10 z-20">
-          <nav className="flex flex-col space-y-4 px-6 py-6">
-            <a href="#" className="text-black/70 hover:text-black transition-colors">
-              Features
-            </a>
-            
-            <a href="#" className="text-black/70 hover:text-black transition-colors">
-              About us
-            </a>
-            <a href="#" className="text-black/70 hover:text-black transition-colors">
-              Contact
-            </a>
-            <ShimmerButton
-              onClick={handleGetStarted}
-              className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2.5 rounded-xl text-sm font-medium shadow-lg w-fit"
-            >
-              Login
-            </ShimmerButton>
-          </nav>
-        </div>
-      )}
 
       <main className="relative z-10 flex flex-col items-start justify-start sm:justify-center min-h-[calc(100vh-80px)] px-4 sm:px-6 lg:px-12 max-w-6xl pt-4 sm:-mt-12 lg:-mt-24 pl-6 sm:pl-12 lg:pl-20">
         <div className="mb-4 sm:mb-8">
