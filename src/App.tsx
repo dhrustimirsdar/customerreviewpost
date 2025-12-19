@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import HomePage from './components/HomePage';
 import AuthPage from './components/AuthPage';
 import AdminLogin from './components/AdminLogin';
 import UserDashboard from './components/UserDashboard';
@@ -51,7 +52,7 @@ function ProtectedRoute({
           <button
             onClick={async () => {
               await signOut();
-              window.location.href = requiredContext === 'admin' ? '/admin/login' : '/';
+              window.location.href = requiredContext === 'admin' ? '/admin/login' : '/login';
             }}
             className="px-6 py-3 bg-gradient-to-r from-slate-600 to-slate-800 text-white rounded-xl font-semibold hover:from-slate-700 hover:to-slate-900 transform hover:scale-105 transition-all duration-300 shadow-lg"
           >
@@ -111,6 +112,14 @@ function Router() {
     };
   }, []);
 
+  if (currentPath === '/') {
+    return <HomePage />;
+  }
+
+  if (currentPath === '/login') {
+    return <AuthPage />;
+  }
+
   if (currentPath === '/admin/login') {
     return <AdminLogin />;
   }
@@ -123,11 +132,15 @@ function Router() {
     );
   }
 
-  return (
-    <ProtectedRoute requiredContext="user">
-      <UserDashboard />
-    </ProtectedRoute>
-  );
+  if (currentPath === '/dashboard') {
+    return (
+      <ProtectedRoute requiredContext="user">
+        <UserDashboard />
+      </ProtectedRoute>
+    );
+  }
+
+  return <HomePage />;
 }
 
 function App() {

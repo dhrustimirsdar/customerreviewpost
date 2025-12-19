@@ -177,7 +177,10 @@ export default function NewAdminDashboard() {
             )}
           </div>
           <button
-            onClick={() => signOut()}
+            onClick={async () => {
+              await signOut();
+              window.location.href = '/admin/login';
+            }}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-red-500 hover:text-white transition-all duration-300 ${!sidebarOpen && 'justify-center'}`}
           >
             <LogOut className="w-5 h-5 flex-shrink-0" />

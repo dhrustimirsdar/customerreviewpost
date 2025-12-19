@@ -21,8 +21,10 @@ export default function AuthPage() {
 
     if (error) {
       setError(error.message);
+      setLoading(false);
+    } else {
+      window.location.href = '/dashboard';
     }
-    setLoading(false);
   };
 
   return (
