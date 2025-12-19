@@ -212,11 +212,11 @@ export default function HomePage() {
         </div>
 
         <h1 className="text-black text-4xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-8xl font-bold leading-tight mb-4 sm:mb-6 text-balance">
-          Build a Portfolio
+          Postal Complaint
           <br />
-          in{" "}
+          Intelligence{" "}
           <LineShadowText className="italic font-light" shadowColor="black">
-            Minutes
+            System
           </LineShadowText>
         </h1>
 
