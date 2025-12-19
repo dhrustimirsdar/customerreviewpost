@@ -3,7 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import {
   Send, CheckCircle2, Clock, TrendingUp, ThumbsUp, ThumbsDown, Brain, Info,
   MessageCircle, LogOut, Plus, Filter, Search, AlertCircle, Package,
-  ChevronRight, Sparkles, BarChart3, X
+  ChevronRight, Sparkles, BarChart3, X, Phone
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import MessageThread from './MessageThread';
@@ -28,6 +28,8 @@ export default function UserDashboard() {
   const [loading, setLoading] = useState(true);
   const [showNewComplaint, setShowNewComplaint] = useState(false);
   const [complaintText, setComplaintText] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [trackingId, setTrackingId] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedComplaint, setSelectedComplaint] = useState<Complaint | null>(null);
   const [filter, setFilter] = useState<'all' | 'pending' | 'resolved'>('all');
@@ -72,7 +74,11 @@ export default function UserDashboard() {
           'Authorization': `Bearer ${session.data.session?.access_token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ complaint_text: complaintText }),
+        body: JSON.stringify({
+          complaint_text: complaintText,
+          phone_number: phoneNumber || null,
+          tracking_id: trackingId || null,
+        }),
       });
 
       const data = await response.json();
@@ -80,6 +86,8 @@ export default function UserDashboard() {
       if (!response.ok) throw new Error(data.error || 'Failed to submit');
 
       setComplaintText('');
+      setPhoneNumber('');
+      setTrackingId('');
       setShowNewComplaint(false);
       fetchUserComplaints();
     } catch (error) {
@@ -379,6 +387,40 @@ export default function UserDashboard() {
                   placeholder="Please provide detailed information about your complaint..."
                   required
                 />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <div className="flex items-center gap-2">
+                      <Phone className="w-4 h-4" />
+                      Phone Number (Optional)
+                    </div>
+                  </label>
+                  <input
+                    type="tel"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-600 focus:ring-4 focus:ring-red-100 outline-none transition-all"
+                    placeholder="Enter your phone number"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <div className="flex items-center gap-2">
+                      <Package className="w-4 h-4" />
+                      Tracking ID (Optional)
+                    </div>
+                  </label>
+                  <input
+                    type="text"
+                    value={trackingId}
+                    onChange={(e) => setTrackingId(e.target.value)}
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-600 focus:ring-4 focus:ring-red-100 outline-none transition-all"
+                    placeholder="Enter your tracking ID"
+                  />
+                </div>
               </div>
 
               <div className="flex gap-3">
