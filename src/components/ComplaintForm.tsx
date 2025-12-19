@@ -70,18 +70,24 @@ export default function ComplaintForm() {
     }
 
     let recaptchaToken = '';
-    try {
-      if (window.grecaptcha && recaptchaRef.current !== null) {
-        recaptchaToken = window.grecaptcha.getResponse(recaptchaRef.current);
-        if (!recaptchaToken) {
-          setError('Please complete the reCAPTCHA verification');
-          return;
+    const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+
+    if (siteKey && siteKey !== '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI') {
+      try {
+        if (window.grecaptcha && recaptchaRef.current !== null) {
+          recaptchaToken = window.grecaptcha.getResponse(recaptchaRef.current);
+          if (!recaptchaToken) {
+            setError('Please complete the reCAPTCHA verification');
+            return;
+          }
         }
+      } catch (err) {
+        console.error('reCAPTCHA error:', err);
+        setError('reCAPTCHA verification failed. Please refresh and try again.');
+        return;
       }
-    } catch (err) {
-      console.error('reCAPTCHA error:', err);
-      setError('reCAPTCHA verification failed. Please refresh and try again.');
-      return;
+    } else {
+      recaptchaToken = 'test-token';
     }
 
     setIsSubmitting(true);

@@ -2,6 +2,12 @@
 
 This guide will help you set up Google reCAPTCHA v2 for the complaint submission form.
 
+## Important Note
+
+**reCAPTCHA is OPTIONAL**: The complaint form will work without reCAPTCHA configuration. If you don't configure reCAPTCHA keys, the form will accept submissions without verification. This is useful for development and testing.
+
+To enable reCAPTCHA protection (recommended for production), follow the steps below.
+
 ## Step 1: Get reCAPTCHA Keys
 
 1. Go to [Google reCAPTCHA Admin Console](https://www.google.com/recaptcha/admin)
