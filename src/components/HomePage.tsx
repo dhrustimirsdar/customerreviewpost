@@ -151,9 +151,7 @@ export default function HomePage() {
 
       <header className="relative z-10 flex items-center justify-between px-4 sm:px-6 py-4 lg:px-12">
         <div className="flex items-center space-x-2 pl-3 sm:pl-6 lg:pl-12">
-          <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 bg-orange-500 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-xl">C</span>
-          </div>
+          <img src="/logo.png" alt="India Post" className="h-16 sm:h-20 lg:h-24 w-auto" />
         </div>
 
         <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
