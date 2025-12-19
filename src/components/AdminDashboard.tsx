@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
-import { LayoutDashboard, CheckCircle2, Clock, AlertCircle, ThumbsUp, ThumbsDown, Home } from 'lucide-react';
+import { LayoutDashboard, CheckCircle2, Clock, AlertCircle, ThumbsUp, ThumbsDown, LogOut, BarChart3, MessageSquare, Brain, Info, Eye, X } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
+import Analytics from './Analytics';
+import MessageThread from './MessageThread';
 
 interface Complaint {
   id: string;
@@ -8,20 +11,32 @@ interface Complaint {
   sentiment: string;
   priority: string;
   ai_response: string;
+  ai_confidence_score?: number;
+  ai_explanation?: string;
   status: string;
   feedback_helpful: boolean | null;
   created_at: string;
 }
 
 export default function AdminDashboard() {
+  const { signOut } = useAuth();
   const [complaints, setComplaints] = useState<Complaint[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [filter, setFilter] = useState<'all' | 'pending' | 'resolved'>('all');
+  const [activeTab, setActiveTab] = useState<'complaints' | 'analytics'>('complaints');
+  const [selectedComplaint, setSelectedComplaint] = useState<Complaint | null>(null);
+  const [messageCounts, setMessageCounts] = useState<Record<string, number>>({});
 
   useEffect(() => {
     fetchComplaints();
   }, []);
+
+  useEffect(() => {
+    if (complaints.length > 0) {
+      fetchMessageCounts();
+    }
+  }, [complaints]);
 
   const fetchComplaints = async () => {
     setIsLoading(true);
@@ -47,6 +62,34 @@ export default function AdminDashboard() {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const fetchMessageCounts = async () => {
+    try {
+      const counts: Record<string, number> = {};
+
+      await Promise.all(
+        complaints.map(async (complaint) => {
+          const response = await fetch(
+            `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/complaint-messages?complaint_id=${complaint.id}`,
+            {
+              headers: {
+                'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+              },
+            }
+          );
+
+          const result = await response.json();
+          if (result.success) {
+            counts[complaint.id] = result.messages.length;
+          }
+        })
+      );
+
+      setMessageCounts(counts);
+    } catch (err) {
+      console.error('Failed to fetch message counts:', err);
     }
   };
 
@@ -139,19 +182,48 @@ export default function AdminDashboard() {
                 <p className="text-sm text-gray-600">Complaint Management System</p>
               </div>
             </div>
-            <a
-              href="/"
+            <button
+              onClick={() => signOut()}
               className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
             >
-              <Home className="w-4 h-4" />
-              Back to Home
-            </a>
+              <LogOut className="w-4 h-4" />
+              Logout
+            </button>
           </div>
         </div>
       </header>
 
       <main className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div className="flex gap-2 mb-6">
+          <button
+            onClick={() => setActiveTab('complaints')}
+            className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors ${
+              activeTab === 'complaints'
+                ? 'bg-blue-600 text-white'
+                : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
+            }`}
+          >
+            <LayoutDashboard className="w-5 h-5" />
+            Complaints
+          </button>
+          <button
+            onClick={() => setActiveTab('analytics')}
+            className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors ${
+              activeTab === 'analytics'
+                ? 'bg-blue-600 text-white'
+                : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
+            }`}
+          >
+            <BarChart3 className="w-5 h-5" />
+            Analytics
+          </button>
+        </div>
+
+        {activeTab === 'analytics' ? (
+          <Analytics complaints={complaints} />
+        ) : (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -259,16 +331,16 @@ export default function AdminDashboard() {
                       Category
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-                      Sentiment
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
                       Priority
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-                      Status
+                      AI Confidence
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-                      Feedback
+                      Messages
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                      Status
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
                       Actions
@@ -290,18 +362,29 @@ export default function AdminDashboard() {
                         <span className="text-sm text-gray-900">{complaint.category}</span>
                       </td>
                       <td className="px-6 py-4">
-                        <span className={`text-sm font-medium ${
-                          complaint.sentiment === 'Positive' ? 'text-green-600' :
-                          complaint.sentiment === 'Negative' ? 'text-red-600' :
-                          'text-gray-600'
-                        }`}>
-                          {complaint.sentiment}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4">
                         <span className={`inline-flex px-3 py-1 text-xs font-medium rounded-full border ${getPriorityColor(complaint.priority)}`}>
                           {complaint.priority}
                         </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        {complaint.ai_confidence_score !== undefined ? (
+                          <div className="flex items-center gap-1">
+                            <Brain className="w-4 h-4 text-blue-600" />
+                            <span className="text-sm font-medium text-gray-900">
+                              {complaint.ai_confidence_score}%
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="text-xs text-gray-400">N/A</span>
+                        )}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-1">
+                          <MessageSquare className="w-4 h-4 text-gray-400" />
+                          <span className="text-sm text-gray-700">
+                            {messageCounts[complaint.id] || 0}
+                          </span>
+                        </div>
                       </td>
                       <td className="px-6 py-4">
                         <span className={`inline-flex px-3 py-1 text-xs font-medium rounded-full ${
@@ -313,42 +396,23 @@ export default function AdminDashboard() {
                         </span>
                       </td>
                       <td className="px-6 py-4">
-                        {complaint.feedback_helpful === null ? (
-                          <div className="flex gap-1">
-                            <button
-                              onClick={() => updateFeedback(complaint.id, true)}
-                              className="p-1 hover:bg-green-100 rounded transition-colors"
-                              title="Helpful"
-                            >
-                              <ThumbsUp className="w-4 h-4 text-gray-400 hover:text-green-600" />
-                            </button>
-                            <button
-                              onClick={() => updateFeedback(complaint.id, false)}
-                              className="p-1 hover:bg-red-100 rounded transition-colors"
-                              title="Not Helpful"
-                            >
-                              <ThumbsDown className="w-4 h-4 text-gray-400 hover:text-red-600" />
-                            </button>
-                          </div>
-                        ) : (
-                          <div className="flex items-center gap-1">
-                            {complaint.feedback_helpful ? (
-                              <ThumbsUp className="w-4 h-4 text-green-600" />
-                            ) : (
-                              <ThumbsDown className="w-4 h-4 text-red-600" />
-                            )}
-                          </div>
-                        )}
-                      </td>
-                      <td className="px-6 py-4">
-                        {complaint.status === 'Pending' && (
+                        <div className="flex gap-2">
                           <button
-                            onClick={() => updateComplaintStatus(complaint.id, 'Resolved')}
-                            className="px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors"
+                            onClick={() => setSelectedComplaint(complaint)}
+                            className="px-3 py-1.5 text-sm font-medium text-blue-600 hover:bg-blue-50 rounded-lg transition-colors flex items-center gap-1"
                           >
-                            Mark Resolved
+                            <Eye className="w-4 h-4" />
+                            View
                           </button>
-                        )}
+                          {complaint.status === 'Pending' && (
+                            <button
+                              onClick={() => updateComplaintStatus(complaint.id, 'Resolved')}
+                              className="px-3 py-1.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors"
+                            >
+                              Resolve
+                            </button>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -358,12 +422,138 @@ export default function AdminDashboard() {
           )}
         </div>
 
-        <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <p className="text-sm text-blue-800">
-            <strong>Note:</strong> Feedback collected from AI responses is used for periodic model retraining to improve accuracy and response quality.
-          </p>
-        </div>
+          </>
+        )}
       </main>
+
+      {selectedComplaint && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+              <h3 className="text-xl font-semibold text-gray-900">Complaint Details</h3>
+              <button
+                onClick={() => setSelectedComplaint(null)}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5 text-gray-500" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-6">
+              <div>
+                <p className="text-sm text-gray-600 mb-1">Complaint ID</p>
+                <p className="text-sm font-mono text-gray-900">{selectedComplaint.id}</p>
+              </div>
+
+              <div>
+                <p className="text-sm text-gray-600 mb-2">Complaint Text</p>
+                <p className="text-sm text-gray-900 bg-gray-50 p-4 rounded-lg">
+                  {selectedComplaint.complaint_text}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div>
+                  <p className="text-xs text-gray-600 mb-1">Category</p>
+                  <p className="text-sm font-semibold text-gray-900">{selectedComplaint.category}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-600 mb-1">Priority</p>
+                  <span className={`inline-flex px-3 py-1 text-xs font-medium rounded-full border ${getPriorityColor(selectedComplaint.priority)}`}>
+                    {selectedComplaint.priority}
+                  </span>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-600 mb-1">Sentiment</p>
+                  <span className={`text-sm font-medium ${
+                    selectedComplaint.sentiment === 'Positive' ? 'text-green-600' :
+                    selectedComplaint.sentiment === 'Negative' ? 'text-red-600' :
+                    'text-gray-600'
+                  }`}>
+                    {selectedComplaint.sentiment}
+                  </span>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-600 mb-1">Status</p>
+                  <span className={`inline-flex px-3 py-1 text-xs font-medium rounded-full ${
+                    selectedComplaint.status === 'Resolved'
+                      ? 'bg-green-100 text-green-700'
+                      : 'bg-amber-100 text-amber-700'
+                  }`}>
+                    {selectedComplaint.status}
+                  </span>
+                </div>
+              </div>
+
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-sm font-semibold text-blue-900 flex items-center gap-2">
+                    <Brain className="w-5 h-5" />
+                    AI Response
+                  </h4>
+                  {selectedComplaint.ai_confidence_score !== undefined && (
+                    <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium">
+                      {selectedComplaint.ai_confidence_score}% confidence
+                    </span>
+                  )}
+                </div>
+                <p className="text-sm text-blue-800 mb-3">{selectedComplaint.ai_response}</p>
+
+                {selectedComplaint.ai_explanation && (
+                  <div className="bg-white bg-opacity-50 rounded p-3 text-xs text-blue-700">
+                    <div className="flex items-start gap-2">
+                      <Info className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="font-medium mb-1">AI Explanation:</p>
+                        <p>{selectedComplaint.ai_explanation}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {selectedComplaint.feedback_helpful !== null && (
+                  <div className="mt-3 pt-3 border-t border-blue-200 flex items-center gap-2 text-sm">
+                    <span className="text-blue-700">User Feedback:</span>
+                    {selectedComplaint.feedback_helpful ? (
+                      <span className="flex items-center gap-1 text-green-700 font-medium">
+                        <ThumbsUp className="w-4 h-4" /> Helpful
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-1 text-red-700 font-medium">
+                        <ThumbsDown className="w-4 h-4" /> Not Helpful
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <MessageThread complaintId={selectedComplaint.id} isAdmin={true} />
+              </div>
+
+              <div className="flex gap-2 justify-end">
+                {selectedComplaint.status === 'Pending' && (
+                  <button
+                    onClick={() => {
+                      updateComplaintStatus(selectedComplaint.id, 'Resolved');
+                      setSelectedComplaint({ ...selectedComplaint, status: 'Resolved' });
+                    }}
+                    className="px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors"
+                  >
+                    Mark as Resolved
+                  </button>
+                )}
+                <button
+                  onClick={() => setSelectedComplaint(null)}
+                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

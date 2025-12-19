@@ -84,7 +84,58 @@ function getFallbackValues() {
     sentiment: "Neutral",
     priority: "Low",
     ai_response: "Thank you for contacting Indian Postal Department. Your complaint has been received and will be reviewed by our support team. We will get back to you within 48 hours. For urgent matters, please call our helpline.",
+    confidence_score: 50,
+    explanation: "Using fallback values due to ML service unavailability.",
   };
+}
+
+async function sendEmailNotification(complaint: any) {
+  const adminEmail = Deno.env.get("ADMIN_EMAIL");
+  const resendApiKey = Deno.env.get("RESEND_API_KEY");
+
+  if (!adminEmail || !resendApiKey) {
+    console.warn("Email not configured. Set ADMIN_EMAIL and RESEND_API_KEY environment variables.");
+    return;
+  }
+
+  try {
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${resendApiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: "Complaint System <noreply@resend.dev>",
+        to: [adminEmail],
+        subject: `New ${complaint.priority} Priority Complaint - ${complaint.category}`,
+        html: `
+          <h2>New Complaint Received</h2>
+          <p><strong>ID:</strong> ${complaint.id}</p>
+          <p><strong>Category:</strong> ${complaint.category}</p>
+          <p><strong>Priority:</strong> ${complaint.priority}</p>
+          <p><strong>Sentiment:</strong> ${complaint.sentiment}</p>
+          <hr>
+          <p><strong>Complaint Text:</strong></p>
+          <p>${complaint.complaint_text}</p>
+          <hr>
+          <p><strong>AI Response:</strong></p>
+          <p>${complaint.ai_response}</p>
+          <hr>
+          <p><strong>AI Confidence:</strong> ${complaint.ai_confidence_score}%</p>
+          <p><strong>Submitted:</strong> ${new Date(complaint.created_at).toLocaleString()}</p>
+        `,
+      }),
+    });
+
+    if (!response.ok) {
+      console.error(`Email service returned status ${response.status}`);
+    } else {
+      console.log("Email notification sent successfully");
+    }
+  } catch (error) {
+    console.error("Error sending email:", error.message);
+  }
 }
 
 Deno.serve(async (req: Request) => {
@@ -119,7 +170,7 @@ Deno.serve(async (req: Request) => {
       mlPredictions = getFallbackValues();
     }
 
-    const { category, sentiment, priority, ai_response } = mlPredictions;
+    const { category, sentiment, priority, ai_response, confidence_score, explanation } = mlPredictions;
 
     // Store complaint in Supabase database
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
@@ -134,6 +185,8 @@ Deno.serve(async (req: Request) => {
         sentiment,
         priority,
         ai_response,
+        ai_confidence_score: confidence_score || 0,
+        ai_explanation: explanation || '',
         status: "Pending",
       })
       .select()
@@ -142,6 +195,11 @@ Deno.serve(async (req: Request) => {
     if (error) {
       throw error;
     }
+
+    // Send email notification to admin (non-blocking)
+    sendEmailNotification(data).catch(err => {
+      console.error('Email notification failed (non-blocking):', err);
+    });
 
     return new Response(
       JSON.stringify({

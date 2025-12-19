@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Send, CheckCircle2, Clock, TrendingUp } from 'lucide-react';
+import { Send, CheckCircle2, Clock, TrendingUp, ThumbsUp, ThumbsDown, Brain, Info } from 'lucide-react';
+import MessageThread from './MessageThread';
 
 interface ComplaintResult {
   id: string;
@@ -7,6 +8,9 @@ interface ComplaintResult {
   sentiment: string;
   priority: string;
   ai_response: string;
+  ai_confidence_score?: number;
+  ai_explanation?: string;
+  feedback_helpful?: boolean | null;
 }
 
 export default function ComplaintForm() {
@@ -75,6 +79,32 @@ export default function ComplaintForm() {
         return 'text-red-600';
       default:
         return 'text-gray-600';
+    }
+  };
+
+  const submitFeedback = async (helpful: boolean) => {
+    if (!result) return;
+
+    try {
+      const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/manage-complaints`;
+
+      const response = await fetch(apiUrl, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: result.id,
+          feedback_helpful: helpful,
+        }),
+      });
+
+      if (response.ok) {
+        setResult({ ...result, feedback_helpful: helpful });
+      }
+    } catch (err) {
+      console.error('Failed to submit feedback:', err);
     }
   };
 
@@ -170,11 +200,64 @@ export default function ComplaintForm() {
                 </div>
 
                 <div className="bg-blue-50 rounded-lg p-6 border border-blue-200">
-                  <h4 className="text-sm font-semibold text-blue-900 mb-2">Automated Response</h4>
-                  <p className="text-sm text-blue-800 leading-relaxed">{result.ai_response}</p>
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="text-sm font-semibold text-blue-900 flex items-center gap-2">
+                      <Brain className="w-5 h-5" />
+                      AI-Generated Response
+                    </h4>
+                    {result.ai_confidence_score !== undefined && (
+                      <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium">
+                        {result.ai_confidence_score}% confidence
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-sm text-blue-800 leading-relaxed mb-4">{result.ai_response}</p>
+
+                  {result.ai_explanation && (
+                    <div className="bg-white bg-opacity-50 rounded p-3 text-xs text-blue-700">
+                      <div className="flex items-start gap-2">
+                        <Info className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                        <p>{result.ai_explanation}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="mt-4 pt-4 border-t border-blue-200">
+                    <p className="text-xs text-blue-800 mb-2 font-medium">Was this response helpful?</p>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => submitFeedback(true)}
+                        disabled={result.feedback_helpful !== null && result.feedback_helpful !== undefined}
+                        className={`flex-1 py-2 px-4 rounded-lg font-medium text-sm transition-all ${
+                          result.feedback_helpful === true
+                            ? 'bg-green-600 text-white'
+                            : 'bg-white text-blue-700 hover:bg-green-50 border border-blue-200'
+                        } disabled:cursor-not-allowed flex items-center justify-center gap-2`}
+                      >
+                        <ThumbsUp className="w-4 h-4" />
+                        Helpful
+                      </button>
+                      <button
+                        onClick={() => submitFeedback(false)}
+                        disabled={result.feedback_helpful !== null && result.feedback_helpful !== undefined}
+                        className={`flex-1 py-2 px-4 rounded-lg font-medium text-sm transition-all ${
+                          result.feedback_helpful === false
+                            ? 'bg-red-600 text-white'
+                            : 'bg-white text-blue-700 hover:bg-red-50 border border-blue-200'
+                        } disabled:cursor-not-allowed flex items-center justify-center gap-2`}
+                      >
+                        <ThumbsDown className="w-4 h-4" />
+                        Not Helpful
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
-                <p className="text-xs text-gray-500 text-center">
+                <div className="mt-6">
+                  <MessageThread complaintId={result.id} isAdmin={false} />
+                </div>
+
+                <p className="text-xs text-gray-500 text-center mt-4">
                   Complaint ID: {result.id}
                 </p>
               </div>
