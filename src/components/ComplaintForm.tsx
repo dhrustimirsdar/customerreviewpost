@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Send, CheckCircle2, Clock, TrendingUp, ThumbsUp, ThumbsDown, Brain, Info } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Send, CheckCircle2, Clock, TrendingUp, ThumbsUp, ThumbsDown, Brain, Info, Phone, Package } from 'lucide-react';
 import MessageThread from './MessageThread';
 
 interface ComplaintResult {
@@ -13,17 +13,74 @@ interface ComplaintResult {
   feedback_helpful?: boolean | null;
 }
 
+declare global {
+  interface Window {
+    grecaptcha: any;
+  }
+}
+
 export default function ComplaintForm() {
   const [complaintText, setComplaintText] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [trackingId, setTrackingId] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [result, setResult] = useState<ComplaintResult | null>(null);
   const [error, setError] = useState('');
+  const recaptchaRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const loadRecaptcha = () => {
+      if (window.grecaptcha && window.grecaptcha.render) {
+        if (recaptchaRef.current === null) {
+          const recaptchaElement = document.getElementById('recaptcha-container');
+          if (recaptchaElement && recaptchaElement.children.length === 0) {
+            try {
+              recaptchaRef.current = window.grecaptcha.render('recaptcha-container', {
+                sitekey: import.meta.env.VITE_RECAPTCHA_SITE_KEY || '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI',
+                size: 'normal',
+              });
+            } catch (err) {
+              console.error('reCAPTCHA render error:', err);
+            }
+          }
+        }
+      }
+    };
+
+    if (window.grecaptcha) {
+      loadRecaptcha();
+    } else {
+      const interval = setInterval(() => {
+        if (window.grecaptcha) {
+          loadRecaptcha();
+          clearInterval(interval);
+        }
+      }, 100);
+
+      return () => clearInterval(interval);
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!complaintText.trim()) {
       setError('Please enter your complaint');
+      return;
+    }
+
+    let recaptchaToken = '';
+    try {
+      if (window.grecaptcha && recaptchaRef.current !== null) {
+        recaptchaToken = window.grecaptcha.getResponse(recaptchaRef.current);
+        if (!recaptchaToken) {
+          setError('Please complete the reCAPTCHA verification');
+          return;
+        }
+      }
+    } catch (err) {
+      console.error('reCAPTCHA error:', err);
+      setError('reCAPTCHA verification failed. Please refresh and try again.');
       return;
     }
 
@@ -40,7 +97,12 @@ export default function ComplaintForm() {
           'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ complaint_text: complaintText }),
+        body: JSON.stringify({
+          complaint_text: complaintText,
+          phone_number: phoneNumber || null,
+          tracking_id: trackingId || null,
+          recaptcha_token: recaptchaToken,
+        }),
       });
 
       const data = await response.json();
@@ -51,8 +113,17 @@ export default function ComplaintForm() {
 
       setResult(data.complaint);
       setComplaintText('');
+      setPhoneNumber('');
+      setTrackingId('');
+
+      if (window.grecaptcha && recaptchaRef.current !== null) {
+        window.grecaptcha.reset(recaptchaRef.current);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
+      if (window.grecaptcha && recaptchaRef.current !== null) {
+        window.grecaptcha.reset(recaptchaRef.current);
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -142,6 +213,48 @@ export default function ComplaintForm() {
                 onChange={(e) => setComplaintText(e.target.value)}
                 disabled={isSubmitting}
               />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                  <div className="flex items-center gap-2">
+                    <Phone className="w-4 h-4" />
+                    Phone Number (Optional)
+                  </div>
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  placeholder="Enter your phone number"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  disabled={isSubmitting}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="tracking" className="block text-sm font-medium text-gray-700 mb-2">
+                  <div className="flex items-center gap-2">
+                    <Package className="w-4 h-4" />
+                    Tracking ID (Optional)
+                  </div>
+                </label>
+                <input
+                  type="text"
+                  id="tracking"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  placeholder="Enter your tracking ID"
+                  value={trackingId}
+                  onChange={(e) => setTrackingId(e.target.value)}
+                  disabled={isSubmitting}
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-center">
+              <div id="recaptcha-container"></div>
             </div>
 
             {error && (

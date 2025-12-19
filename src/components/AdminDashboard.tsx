@@ -16,6 +16,9 @@ interface Complaint {
   status: string;
   feedback_helpful: boolean | null;
   created_at: string;
+  phone_number?: string | null;
+  tracking_id?: string | null;
+  user_email?: string | null;
 }
 
 export default function AdminDashboard() {
@@ -328,6 +331,9 @@ export default function AdminDashboard() {
                       Complaint
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                      Contact
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
                       Category
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
@@ -356,6 +362,24 @@ export default function AdminDashboard() {
                           <p className="text-xs text-gray-500 mt-1">
                             {new Date(complaint.created_at).toLocaleDateString()}
                           </p>
+                          {complaint.tracking_id && (
+                            <p className="text-xs text-blue-600 mt-1 font-medium">
+                              Tracking: {complaint.tracking_id}
+                            </p>
+                          )}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="text-xs text-gray-600">
+                          {complaint.user_email && (
+                            <p className="mb-1">{complaint.user_email}</p>
+                          )}
+                          {complaint.phone_number && (
+                            <p className="text-gray-700 font-medium">{complaint.phone_number}</p>
+                          )}
+                          {!complaint.user_email && !complaint.phone_number && (
+                            <span className="text-gray-400">N/A</span>
+                          )}
                         </div>
                       </td>
                       <td className="px-6 py-4">
@@ -444,6 +468,29 @@ export default function AdminDashboard() {
                 <p className="text-sm text-gray-600 mb-1">Complaint ID</p>
                 <p className="text-sm font-mono text-gray-900">{selectedComplaint.id}</p>
               </div>
+
+              {(selectedComplaint.user_email || selectedComplaint.phone_number || selectedComplaint.tracking_id) && (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 p-4 rounded-lg">
+                  {selectedComplaint.user_email && (
+                    <div>
+                      <p className="text-xs text-gray-600 mb-1">Email</p>
+                      <p className="text-sm text-gray-900">{selectedComplaint.user_email}</p>
+                    </div>
+                  )}
+                  {selectedComplaint.phone_number && (
+                    <div>
+                      <p className="text-xs text-gray-600 mb-1">Phone Number</p>
+                      <p className="text-sm text-gray-900">{selectedComplaint.phone_number}</p>
+                    </div>
+                  )}
+                  {selectedComplaint.tracking_id && (
+                    <div>
+                      <p className="text-xs text-gray-600 mb-1">Tracking ID</p>
+                      <p className="text-sm text-blue-600 font-medium">{selectedComplaint.tracking_id}</p>
+                    </div>
+                  )}
+                </div>
+              )}
 
               <div>
                 <p className="text-sm text-gray-600 mb-2">Complaint Text</p>

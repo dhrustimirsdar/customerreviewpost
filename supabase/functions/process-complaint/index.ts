@@ -145,7 +145,7 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    const { complaint_text } = await req.json();
+    const { complaint_text, phone_number, tracking_id, recaptcha_token } = await req.json();
 
     if (!complaint_text || complaint_text.trim().length === 0) {
       return new Response(
@@ -155,6 +155,44 @@ Deno.serve(async (req: Request) => {
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         }
       );
+    }
+
+    if (!recaptcha_token) {
+      return new Response(
+        JSON.stringify({ error: "reCAPTCHA verification is required" }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
+    }
+
+    const recaptchaSecret = Deno.env.get("RECAPTCHA_SECRET_KEY");
+    if (recaptchaSecret) {
+      try {
+        const recaptchaResponse = await fetch(
+          `https://www.google.com/recaptcha/api/siteverify`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `secret=${recaptchaSecret}&response=${recaptcha_token}`,
+          }
+        );
+
+        const recaptchaData = await recaptchaResponse.json();
+
+        if (!recaptchaData.success || recaptchaData.score < 0.5) {
+          return new Response(
+            JSON.stringify({ error: "reCAPTCHA verification failed. Please try again." }),
+            {
+              status: 400,
+              headers: { ...corsHeaders, "Content-Type": "application/json" },
+            }
+          );
+        }
+      } catch (error) {
+        console.error("reCAPTCHA verification error:", error);
+      }
     }
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
@@ -198,6 +236,8 @@ Deno.serve(async (req: Request) => {
         status: "Pending",
         user_id: userId,
         user_email: userEmail,
+        phone_number: phone_number || null,
+        tracking_id: tracking_id || null,
       })
       .select()
       .single();
