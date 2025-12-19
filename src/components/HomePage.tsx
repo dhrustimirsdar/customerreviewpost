@@ -208,9 +208,7 @@ export default function HomePage() {
 
       <main className="relative z-10 flex flex-col items-start justify-start sm:justify-center min-h-[calc(100vh-80px)] px-4 sm:px-6 lg:px-12 max-w-6xl pt-4 sm:-mt-12 lg:-mt-24 pl-6 sm:pl-12 lg:pl-20">
         <div className="mb-4 sm:mb-8">
-          <div className="inline-flex items-center bg-black/5 backdrop-blur-sm border border-black/10 rounded-full px-3 sm:px-4 py-2">
-            <span className="text-black text-xs md:text-xs">Try 14 days trial free</span>
-          </div>
+          
         </div>
 
         <h1 className="text-black text-4xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-8xl font-bold leading-tight mb-4 sm:mb-6 text-balance">
