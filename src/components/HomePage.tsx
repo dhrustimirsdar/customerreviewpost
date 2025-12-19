@@ -158,9 +158,7 @@ export default function HomePage() {
           <a href="#" className="text-black/70 hover:text-black transition-colors text-sm lg:text-base">
             Features
           </a>
-          <a href="#" className="text-black/70 hover:text-black transition-colors text-sm lg:text-base">
-            Pricing
-          </a>
+          
           <a href="#" className="text-black/70 hover:text-black transition-colors text-sm lg:text-base">
             About us
           </a>
