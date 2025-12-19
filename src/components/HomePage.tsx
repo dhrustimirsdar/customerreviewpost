@@ -13,7 +13,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      <div className="absolute inset-0 bg-black">
+      <div className="absolute inset-0 bg-white">
         <div className="absolute inset-0">
           <svg
             className="absolute inset-0 w-full h-full"
@@ -60,22 +60,22 @@ export default function HomePage() {
                 </feMerge>
               </filter>
               <linearGradient id="threadFade1" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="rgba(0,0,0,1)" />
+                <stop offset="0%" stopColor="rgba(255,255,255,1)" />
                 <stop offset="15%" stopColor="rgba(249,115,22,0.8)" />
                 <stop offset="85%" stopColor="rgba(249,115,22,0.8)" />
-                <stop offset="100%" stopColor="rgba(0,0,0,1)" />
+                <stop offset="100%" stopColor="rgba(255,255,255,1)" />
               </linearGradient>
               <linearGradient id="threadFade2" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="rgba(0,0,0,1)" />
+                <stop offset="0%" stopColor="rgba(255,255,255,1)" />
                 <stop offset="12%" stopColor="rgba(251,146,60,0.7)" />
                 <stop offset="88%" stopColor="rgba(251,146,60,0.7)" />
-                <stop offset="100%" stopColor="rgba(0,0,0,1)" />
+                <stop offset="100%" stopColor="rgba(255,255,255,1)" />
               </linearGradient>
               <linearGradient id="threadFade3" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="rgba(0,0,0,1)" />
+                <stop offset="0%" stopColor="rgba(255,255,255,1)" />
                 <stop offset="18%" stopColor="rgba(234,88,12,0.8)" />
                 <stop offset="82%" stopColor="rgba(234,88,12,0.8)" />
-                <stop offset="100%" stopColor="rgba(0,0,0,1)" />
+                <stop offset="100%" stopColor="rgba(255,255,255,1)" />
               </linearGradient>
               <filter id="neonGlow" x="-50%" y="-50%" width="200%" height="200%">
                 <feGaussianBlur stdDeviation="2" result="coloredBlur" />
@@ -155,21 +155,21 @@ export default function HomePage() {
         </div>
 
         <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
-          <a href="#" className="text-white/80 hover:text-white transition-colors text-sm lg:text-base">
+          <a href="#" className="text-black/70 hover:text-black transition-colors text-sm lg:text-base">
             Features
           </a>
-          <a href="#" className="text-white/80 hover:text-white transition-colors text-sm lg:text-base">
+          <a href="#" className="text-black/70 hover:text-black transition-colors text-sm lg:text-base">
             Pricing
           </a>
-          <a href="#" className="text-white/80 hover:text-white transition-colors text-sm lg:text-base">
+          <a href="#" className="text-black/70 hover:text-black transition-colors text-sm lg:text-base">
             About us
           </a>
-          <a href="#" className="text-white/80 hover:text-white transition-colors text-sm lg:text-base">
+          <a href="#" className="text-black/70 hover:text-black transition-colors text-sm lg:text-base">
             Contact
           </a>
         </nav>
 
-        <button className="md:hidden text-white p-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+        <button className="md:hidden text-black p-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
           <Menu className="w-6 h-6" />
         </button>
 
@@ -182,18 +182,18 @@ export default function HomePage() {
       </header>
 
       {mobileMenuOpen && (
-        <div className="md:hidden absolute top-16 left-0 right-0 bg-black/95 backdrop-blur-sm border-b border-white/10 z-20">
+        <div className="md:hidden absolute top-16 left-0 right-0 bg-white/95 backdrop-blur-sm border-b border-black/10 z-20">
           <nav className="flex flex-col space-y-4 px-6 py-6">
-            <a href="#" className="text-white/80 hover:text-white transition-colors">
+            <a href="#" className="text-black/70 hover:text-black transition-colors">
               Features
             </a>
-            <a href="#" className="text-white/80 hover:text-white transition-colors">
+            <a href="#" className="text-black/70 hover:text-black transition-colors">
               Pricing
             </a>
-            <a href="#" className="text-white/80 hover:text-white transition-colors">
+            <a href="#" className="text-black/70 hover:text-black transition-colors">
               About us
             </a>
-            <a href="#" className="text-white/80 hover:text-white transition-colors">
+            <a href="#" className="text-black/70 hover:text-black transition-colors">
               Contact
             </a>
             <ShimmerButton
@@ -208,21 +208,21 @@ export default function HomePage() {
 
       <main className="relative z-10 flex flex-col items-start justify-start sm:justify-center min-h-[calc(100vh-80px)] px-4 sm:px-6 lg:px-12 max-w-6xl pt-4 sm:-mt-12 lg:-mt-24 pl-6 sm:pl-12 lg:pl-20">
         <div className="mb-4 sm:mb-8">
-          <div className="inline-flex items-center bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-3 sm:px-4 py-2">
-            <span className="text-white text-xs md:text-xs">Try 14 days trial free</span>
+          <div className="inline-flex items-center bg-black/5 backdrop-blur-sm border border-black/10 rounded-full px-3 sm:px-4 py-2">
+            <span className="text-black text-xs md:text-xs">Try 14 days trial free</span>
           </div>
         </div>
 
-        <h1 className="text-white text-4xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-8xl font-bold leading-tight mb-4 sm:mb-6 text-balance">
+        <h1 className="text-black text-4xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-8xl font-bold leading-tight mb-4 sm:mb-6 text-balance">
           Build a Portfolio
           <br />
           in{" "}
-          <LineShadowText className="italic font-light" shadowColor="white">
+          <LineShadowText className="italic font-light" shadowColor="black">
             Minutes
           </LineShadowText>
         </h1>
 
-        <p className="text-white/70 text-sm sm:text-base md:text-sm lg:text-2xl mb-6 sm:mb-8 max-w-2xl text-pretty">
+        <p className="text-black/70 text-sm sm:text-base md:text-sm lg:text-2xl mb-6 sm:mb-8 max-w-2xl text-pretty">
           Join a Community of Digital Artists
           <br className="hidden sm:block" />
           <span className="sm:hidden"> </span>

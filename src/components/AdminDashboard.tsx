@@ -3,6 +3,8 @@ import { LayoutDashboard, CheckCircle2, Clock, AlertCircle, ThumbsUp, ThumbsDown
 import { useAuth } from '../contexts/AuthContext';
 import Analytics from './Analytics';
 import MessageThread from './MessageThread';
+import TranslatedText from './TranslatedText';
+import LanguageSelector from './LanguageSelector';
 
 interface Complaint {
   id: string;
@@ -181,17 +183,24 @@ export default function AdminDashboard() {
                 <LayoutDashboard className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-semibold text-gray-900">Admin Dashboard</h1>
-                <p className="text-sm text-gray-600">Complaint Management System</p>
+                <h1 className="text-2xl font-semibold text-gray-900">
+                  <TranslatedText text="Admin Dashboard" />
+                </h1>
+                <p className="text-sm text-gray-600">
+                  <TranslatedText text="Complaint Management System" />
+                </p>
               </div>
             </div>
-            <button
-              onClick={() => signOut()}
-              className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              <LogOut className="w-4 h-4" />
-              Logout
-            </button>
+            <div className="flex items-center gap-3">
+              <LanguageSelector />
+              <button
+                onClick={() => signOut()}
+                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <LogOut className="w-4 h-4" />
+                <TranslatedText text="Logout" />
+              </button>
+            </div>
           </div>
         </div>
       </header>
@@ -207,7 +216,7 @@ export default function AdminDashboard() {
             }`}
           >
             <LayoutDashboard className="w-5 h-5" />
-            Complaints
+            <TranslatedText text="Complaints" />
           </button>
           <button
             onClick={() => setActiveTab('analytics')}
@@ -218,7 +227,7 @@ export default function AdminDashboard() {
             }`}
           >
             <BarChart3 className="w-5 h-5" />
-            Analytics
+            <TranslatedText text="Analytics" />
           </button>
         </div>
 
@@ -230,7 +239,9 @@ export default function AdminDashboard() {
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total</p>
+                <p className="text-sm font-medium text-gray-600">
+                  <TranslatedText text="Total" />
+                </p>
                 <p className="text-3xl font-bold text-gray-900 mt-1">{stats.total}</p>
               </div>
               <LayoutDashboard className="w-10 h-10 text-gray-400" />
@@ -240,7 +251,9 @@ export default function AdminDashboard() {
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Pending</p>
+                <p className="text-sm font-medium text-gray-600">
+                  <TranslatedText text="Pending" />
+                </p>
                 <p className="text-3xl font-bold text-amber-600 mt-1">{stats.pending}</p>
               </div>
               <Clock className="w-10 h-10 text-amber-400" />
@@ -250,7 +263,9 @@ export default function AdminDashboard() {
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Resolved</p>
+                <p className="text-sm font-medium text-gray-600">
+                  <TranslatedText text="Resolved" />
+                </p>
                 <p className="text-3xl font-bold text-green-600 mt-1">{stats.resolved}</p>
               </div>
               <CheckCircle2 className="w-10 h-10 text-green-400" />
@@ -260,7 +275,9 @@ export default function AdminDashboard() {
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">High Priority</p>
+                <p className="text-sm font-medium text-gray-600">
+                  <TranslatedText text="High Priority" />
+                </p>
                 <p className="text-3xl font-bold text-red-600 mt-1">{stats.high}</p>
               </div>
               <AlertCircle className="w-10 h-10 text-red-400" />
@@ -271,7 +288,9 @@ export default function AdminDashboard() {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200">
           <div className="p-6 border-b border-gray-200">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-gray-900">Complaints</h2>
+              <h2 className="text-xl font-semibold text-gray-900">
+                <TranslatedText text="Complaints" />
+              </h2>
               <div className="flex gap-2">
                 <button
                   onClick={() => setFilter('all')}
@@ -281,7 +300,7 @@ export default function AdminDashboard() {
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  All
+                  <TranslatedText text="All" />
                 </button>
                 <button
                   onClick={() => setFilter('pending')}
@@ -291,7 +310,7 @@ export default function AdminDashboard() {
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  Pending
+                  <TranslatedText text="Pending" />
                 </button>
                 <button
                   onClick={() => setFilter('resolved')}
@@ -301,7 +320,7 @@ export default function AdminDashboard() {
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  Resolved
+                  <TranslatedText text="Resolved" />
                 </button>
               </div>
             </div>
@@ -310,7 +329,9 @@ export default function AdminDashboard() {
           {isLoading ? (
             <div className="p-12 text-center">
               <Clock className="w-8 h-8 animate-spin text-gray-400 mx-auto mb-2" />
-              <p className="text-gray-600">Loading complaints...</p>
+              <p className="text-gray-600">
+                <TranslatedText text="Loading complaints..." />
+              </p>
             </div>
           ) : error ? (
             <div className="p-12 text-center">
@@ -320,7 +341,9 @@ export default function AdminDashboard() {
           ) : filteredComplaints.length === 0 ? (
             <div className="p-12 text-center">
               <CheckCircle2 className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-              <p className="text-gray-600">No complaints found</p>
+              <p className="text-gray-600">
+                <TranslatedText text="No complaints found" />
+              </p>
             </div>
           ) : (
             <div className="overflow-x-auto">
@@ -328,28 +351,28 @@ export default function AdminDashboard() {
                 <thead className="bg-gray-50 border-b border-gray-200">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-                      Complaint
+                      <TranslatedText text="Complaint" />
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-                      Contact
+                      <TranslatedText text="Contact" />
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-                      Category
+                      <TranslatedText text="Category" />
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-                      Priority
+                      <TranslatedText text="Priority" />
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-                      AI Confidence
+                      <TranslatedText text="AI Confidence" />
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-                      Messages
+                      <TranslatedText text="Messages" />
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-                      Status
+                      <TranslatedText text="Status" />
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-                      Actions
+                      <TranslatedText text="Actions" />
                     </th>
                   </tr>
                 </thead>
@@ -426,14 +449,14 @@ export default function AdminDashboard() {
                             className="px-3 py-1.5 text-sm font-medium text-blue-600 hover:bg-blue-50 rounded-lg transition-colors flex items-center gap-1"
                           >
                             <Eye className="w-4 h-4" />
-                            View
+                            <TranslatedText text="View" />
                           </button>
                           {complaint.status === 'Pending' && (
                             <button
                               onClick={() => updateComplaintStatus(complaint.id, 'Resolved')}
                               className="px-3 py-1.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors"
                             >
-                              Resolve
+                              <TranslatedText text="Resolve" />
                             </button>
                           )}
                         </div>
@@ -454,7 +477,9 @@ export default function AdminDashboard() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-              <h3 className="text-xl font-semibold text-gray-900">Complaint Details</h3>
+              <h3 className="text-xl font-semibold text-gray-900">
+                <TranslatedText text="Complaint Details" />
+              </h3>
               <button
                 onClick={() => setSelectedComplaint(null)}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -465,7 +490,9 @@ export default function AdminDashboard() {
 
             <div className="p-6 space-y-6">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Complaint ID</p>
+                <p className="text-sm text-gray-600 mb-1">
+                  <TranslatedText text="Complaint ID" />
+                </p>
                 <p className="text-sm font-mono text-gray-900">{selectedComplaint.id}</p>
               </div>
 
@@ -473,19 +500,25 @@ export default function AdminDashboard() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 p-4 rounded-lg">
                   {selectedComplaint.user_email && (
                     <div>
-                      <p className="text-xs text-gray-600 mb-1">Email</p>
+                      <p className="text-xs text-gray-600 mb-1">
+                        <TranslatedText text="Email" />
+                      </p>
                       <p className="text-sm text-gray-900">{selectedComplaint.user_email}</p>
                     </div>
                   )}
                   {selectedComplaint.phone_number && (
                     <div>
-                      <p className="text-xs text-gray-600 mb-1">Phone Number</p>
+                      <p className="text-xs text-gray-600 mb-1">
+                        <TranslatedText text="Phone Number" />
+                      </p>
                       <p className="text-sm text-gray-900">{selectedComplaint.phone_number}</p>
                     </div>
                   )}
                   {selectedComplaint.tracking_id && (
                     <div>
-                      <p className="text-xs text-gray-600 mb-1">Tracking ID</p>
+                      <p className="text-xs text-gray-600 mb-1">
+                        <TranslatedText text="Tracking ID" />
+                      </p>
                       <p className="text-sm text-blue-600 font-medium">{selectedComplaint.tracking_id}</p>
                     </div>
                   )}
@@ -493,7 +526,9 @@ export default function AdminDashboard() {
               )}
 
               <div>
-                <p className="text-sm text-gray-600 mb-2">Complaint Text</p>
+                <p className="text-sm text-gray-600 mb-2">
+                  <TranslatedText text="Complaint Text" />
+                </p>
                 <p className="text-sm text-gray-900 bg-gray-50 p-4 rounded-lg">
                   {selectedComplaint.complaint_text}
                 </p>
@@ -501,33 +536,41 @@ export default function AdminDashboard() {
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
-                  <p className="text-xs text-gray-600 mb-1">Category</p>
+                  <p className="text-xs text-gray-600 mb-1">
+                    <TranslatedText text="Category" />
+                  </p>
                   <p className="text-sm font-semibold text-gray-900">{selectedComplaint.category}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-600 mb-1">Priority</p>
+                  <p className="text-xs text-gray-600 mb-1">
+                    <TranslatedText text="Priority" />
+                  </p>
                   <span className={`inline-flex px-3 py-1 text-xs font-medium rounded-full border ${getPriorityColor(selectedComplaint.priority)}`}>
-                    {selectedComplaint.priority}
+                    <TranslatedText text={selectedComplaint.priority} />
                   </span>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-600 mb-1">Sentiment</p>
+                  <p className="text-xs text-gray-600 mb-1">
+                    <TranslatedText text="Sentiment" />
+                  </p>
                   <span className={`text-sm font-medium ${
                     selectedComplaint.sentiment === 'Positive' ? 'text-green-600' :
                     selectedComplaint.sentiment === 'Negative' ? 'text-red-600' :
                     'text-gray-600'
                   }`}>
-                    {selectedComplaint.sentiment}
+                    <TranslatedText text={selectedComplaint.sentiment} />
                   </span>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-600 mb-1">Status</p>
+                  <p className="text-xs text-gray-600 mb-1">
+                    <TranslatedText text="Status" />
+                  </p>
                   <span className={`inline-flex px-3 py-1 text-xs font-medium rounded-full ${
                     selectedComplaint.status === 'Resolved'
                       ? 'bg-green-100 text-green-700'
                       : 'bg-amber-100 text-amber-700'
                   }`}>
-                    {selectedComplaint.status}
+                    <TranslatedText text={selectedComplaint.status} />
                   </span>
                 </div>
               </div>
@@ -536,11 +579,11 @@ export default function AdminDashboard() {
                 <div className="flex items-center justify-between mb-2">
                   <h4 className="text-sm font-semibold text-blue-900 flex items-center gap-2">
                     <Brain className="w-5 h-5" />
-                    AI Response
+                    <TranslatedText text="AI Response" />
                   </h4>
                   {selectedComplaint.ai_confidence_score !== undefined && (
                     <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium">
-                      {selectedComplaint.ai_confidence_score}% confidence
+                      {selectedComplaint.ai_confidence_score}% <TranslatedText text="confidence" />
                     </span>
                   )}
                 </div>
@@ -551,7 +594,9 @@ export default function AdminDashboard() {
                     <div className="flex items-start gap-2">
                       <Info className="w-4 h-4 mt-0.5 flex-shrink-0" />
                       <div>
-                        <p className="font-medium mb-1">AI Explanation:</p>
+                        <p className="font-medium mb-1">
+                          <TranslatedText text="AI Explanation:" />
+                        </p>
                         <p>{selectedComplaint.ai_explanation}</p>
                       </div>
                     </div>
@@ -560,14 +605,16 @@ export default function AdminDashboard() {
 
                 {selectedComplaint.feedback_helpful !== null && (
                   <div className="mt-3 pt-3 border-t border-blue-200 flex items-center gap-2 text-sm">
-                    <span className="text-blue-700">User Feedback:</span>
+                    <span className="text-blue-700">
+                      <TranslatedText text="User Feedback:" />
+                    </span>
                     {selectedComplaint.feedback_helpful ? (
                       <span className="flex items-center gap-1 text-green-700 font-medium">
-                        <ThumbsUp className="w-4 h-4" /> Helpful
+                        <ThumbsUp className="w-4 h-4" /> <TranslatedText text="Helpful" />
                       </span>
                     ) : (
                       <span className="flex items-center gap-1 text-red-700 font-medium">
-                        <ThumbsDown className="w-4 h-4" /> Not Helpful
+                        <ThumbsDown className="w-4 h-4" /> <TranslatedText text="Not Helpful" />
                       </span>
                     )}
                   </div>
@@ -587,14 +634,14 @@ export default function AdminDashboard() {
                     }}
                     className="px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors"
                   >
-                    Mark as Resolved
+                    <TranslatedText text="Mark as Resolved" />
                   </button>
                 )}
                 <button
                   onClick={() => setSelectedComplaint(null)}
                   className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
                 >
-                  Close
+                  <TranslatedText text="Close" />
                 </button>
               </div>
             </div>

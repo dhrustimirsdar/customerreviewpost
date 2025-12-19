@@ -257,7 +257,9 @@ export default function UserDashboard() {
                 <Package className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">My Complaints</h1>
+                <h1 className="text-2xl font-bold text-gray-900">
+                  <TranslatedText text="My Complaints" />
+                </h1>
                 <p className="text-sm text-gray-600">{user?.email}</p>
               </div>
             </div>
@@ -271,7 +273,7 @@ export default function UserDashboard() {
                 className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-300"
               >
                 <LogOut className="w-5 h-5" />
-                <span>Sign Out</span>
+                <TranslatedText text="Sign Out" as="span" />
               </button>
             </div>
           </div>
@@ -283,7 +285,9 @@ export default function UserDashboard() {
           <div className="bg-white rounded-2xl shadow-lg p-6 transform hover:scale-105 transition-transform duration-300 border-l-4 border-red-600">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Total Complaints</p>
+                <p className="text-sm text-gray-600 mb-1">
+                  <TranslatedText text="Total Complaints" />
+                </p>
                 <p className="text-3xl font-bold text-gray-900">{stats.total}</p>
               </div>
               <div className="p-4 bg-red-100 rounded-xl">
@@ -295,7 +299,9 @@ export default function UserDashboard() {
           <div className="bg-white rounded-2xl shadow-lg p-6 transform hover:scale-105 transition-transform duration-300 border-l-4 border-amber-500">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Pending</p>
+                <p className="text-sm text-gray-600 mb-1">
+                  <TranslatedText text="Pending" />
+                </p>
                 <p className="text-3xl font-bold text-gray-900">{stats.pending}</p>
               </div>
               <div className="p-4 bg-amber-100 rounded-xl">
@@ -307,7 +313,9 @@ export default function UserDashboard() {
           <div className="bg-white rounded-2xl shadow-lg p-6 transform hover:scale-105 transition-transform duration-300 border-l-4 border-green-500">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Resolved</p>
+                <p className="text-sm text-gray-600 mb-1">
+                  <TranslatedText text="Resolved" />
+                </p>
                 <p className="text-3xl font-bold text-gray-900">{stats.resolved}</p>
               </div>
               <div className="p-4 bg-green-100 rounded-xl">
@@ -319,7 +327,9 @@ export default function UserDashboard() {
           <div className="bg-white rounded-2xl shadow-lg p-6 transform hover:scale-105 transition-transform duration-300 border-l-4 border-red-500">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">High Priority</p>
+                <p className="text-sm text-gray-600 mb-1">
+                  <TranslatedText text="High Priority" />
+                </p>
                 <p className="text-3xl font-bold text-gray-900">{stats.highPriority}</p>
               </div>
               <div className="p-4 bg-red-100 rounded-xl">
@@ -336,19 +346,19 @@ export default function UserDashboard() {
                 onClick={() => setFilter('all')}
                 className={`px-4 py-2 rounded-lg font-medium transition-all ${filter === 'all' ? 'bg-red-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
               >
-                All
+                <TranslatedText text="All" />
               </button>
               <button
                 onClick={() => setFilter('pending')}
                 className={`px-4 py-2 rounded-lg font-medium transition-all ${filter === 'pending' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
               >
-                Pending
+                <TranslatedText text="Pending" />
               </button>
               <button
                 onClick={() => setFilter('resolved')}
                 className={`px-4 py-2 rounded-lg font-medium transition-all ${filter === 'resolved' ? 'bg-green-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
               >
-                Resolved
+                <TranslatedText text="Resolved" />
               </button>
             </div>
 
@@ -368,7 +378,7 @@ export default function UserDashboard() {
               className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-red-600 to-orange-500 text-white rounded-lg font-semibold hover:from-red-700 hover:to-orange-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
             >
               <Plus className="w-5 h-5" />
-              New Complaint
+              <TranslatedText text="New Complaint" />
             </button>
           </div>
 
@@ -376,12 +386,14 @@ export default function UserDashboard() {
             {filteredComplaints.length === 0 ? (
               <div className="text-center py-12">
                 <Package className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-500 text-lg">No complaints found</p>
+                <p className="text-gray-500 text-lg">
+                  <TranslatedText text="No complaints found" />
+                </p>
                 <button
                   onClick={() => setShowNewComplaint(true)}
                   className="mt-4 text-red-600 hover:text-red-700 font-medium"
                 >
-                  Submit your first complaint
+                  <TranslatedText text="Submit your first complaint" />
                 </button>
               </div>
             ) : (
@@ -425,7 +437,7 @@ export default function UserDashboard() {
                       )}
                     </div>
                     <button className="flex items-center gap-1 text-red-600 hover:text-red-700 font-medium">
-                      View Details
+                      <TranslatedText text="View Details" />
                       <ChevronRight className="w-4 h-4" />
                     </button>
                   </div>
@@ -444,7 +456,9 @@ export default function UserDashboard() {
                 <div className="p-3 bg-gradient-to-r from-red-600 to-orange-500 rounded-xl">
                   <Plus className="w-6 h-6 text-white" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900">New Complaint</h2>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  <TranslatedText text="New Complaint" />
+                </h2>
               </div>
               <button
                 onClick={() => setShowNewComplaint(false)}
@@ -457,7 +471,7 @@ export default function UserDashboard() {
             <form onSubmit={handleSubmitComplaint} className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Describe your issue in detail
+                  <TranslatedText text="Describe your issue in detail" />
                 </label>
                 <textarea
                   rows={6}
@@ -474,7 +488,7 @@ export default function UserDashboard() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     <div className="flex items-center gap-2">
                       <Phone className="w-4 h-4" />
-                      Phone Number (Optional)
+                      <TranslatedText text="Phone Number (Optional)" />
                     </div>
                   </label>
                   <input
@@ -490,7 +504,7 @@ export default function UserDashboard() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     <div className="flex items-center gap-2">
                       <Package className="w-4 h-4" />
-                      Tracking ID (Optional)
+                      <TranslatedText text="Tracking ID (Optional)" />
                     </div>
                   </label>
                   <input
@@ -513,7 +527,7 @@ export default function UserDashboard() {
                   onClick={() => setShowNewComplaint(false)}
                   className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all"
                 >
-                  Cancel
+                  <TranslatedText text="Cancel" />
                 </button>
                 <button
                   type="submit"
@@ -523,12 +537,12 @@ export default function UserDashboard() {
                   {isSubmitting ? (
                     <>
                       <Clock className="w-5 h-5 animate-spin" />
-                      Processing...
+                      <TranslatedText text="Processing..." />
                     </>
                   ) : (
                     <>
                       <Send className="w-5 h-5" />
-                      Submit Complaint
+                      <TranslatedText text="Submit Complaint" />
                     </>
                   )}
                 </button>
@@ -559,20 +573,22 @@ export default function UserDashboard() {
 
             <div className="p-6 space-y-6">
               <div className="bg-gray-50 rounded-2xl p-6">
-                <h3 className="font-semibold text-gray-900 mb-2">Your Complaint</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">
+                  <TranslatedText text="Your Complaint" />
+                </h3>
                 <p className="text-gray-700">{selectedComplaint.complaint_text}</p>
                 {(selectedComplaint.phone_number || selectedComplaint.tracking_id) && (
                   <div className="mt-4 pt-4 border-t border-gray-300 space-y-2">
                     {selectedComplaint.phone_number && (
                       <p className="text-sm text-gray-600 flex items-center gap-2">
                         <Phone className="w-4 h-4 text-red-600" />
-                        Phone: {selectedComplaint.phone_number}
+                        <TranslatedText text="Phone" />: {selectedComplaint.phone_number}
                       </p>
                     )}
                     {selectedComplaint.tracking_id && (
                       <p className="text-sm text-gray-600 flex items-center gap-2">
                         <Package className="w-4 h-4 text-red-600" />
-                        Tracking ID: {selectedComplaint.tracking_id}
+                        <TranslatedText text="Tracking ID" />: {selectedComplaint.tracking_id}
                       </p>
                     )}
                   </div>
@@ -581,20 +597,26 @@ export default function UserDashboard() {
 
               <div className="grid grid-cols-3 gap-4">
                 <div className="bg-gray-50 rounded-xl p-4">
-                  <p className="text-xs text-gray-600 mb-1">Status</p>
+                  <p className="text-xs text-gray-600 mb-1">
+                    <TranslatedText text="Status" />
+                  </p>
                   <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${selectedComplaint.status === 'Resolved' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
-                    {selectedComplaint.status}
+                    <TranslatedText text={selectedComplaint.status} />
                   </span>
                 </div>
                 <div className="bg-gray-50 rounded-xl p-4">
-                  <p className="text-xs text-gray-600 mb-1">Priority</p>
+                  <p className="text-xs text-gray-600 mb-1">
+                    <TranslatedText text="Priority" />
+                  </p>
                   <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium border ${getPriorityColor(selectedComplaint.priority)}`}>
-                    {selectedComplaint.priority}
+                    <TranslatedText text={selectedComplaint.priority} />
                   </span>
                 </div>
                 <div className="bg-gray-50 rounded-xl p-4">
-                  <p className="text-xs text-gray-600 mb-1">Sentiment</p>
-                  <span className="text-lg">{getEmojiForSentiment(selectedComplaint.sentiment)} {selectedComplaint.sentiment}</span>
+                  <p className="text-xs text-gray-600 mb-1">
+                    <TranslatedText text="Sentiment" />
+                  </p>
+                  <span className="text-lg">{getEmojiForSentiment(selectedComplaint.sentiment)} <TranslatedText text={selectedComplaint.sentiment} /></span>
                 </div>
               </div>
 
@@ -602,11 +624,11 @@ export default function UserDashboard() {
                 <div className="flex items-center justify-between mb-4">
                   <h4 className="font-semibold text-gray-900 flex items-center gap-2">
                     <Brain className="w-5 h-5 text-red-600" />
-                    AI-Generated Response
+                    <TranslatedText text="AI-Generated Response" />
                   </h4>
                   {selectedComplaint.ai_confidence_score && (
                     <span className="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-medium">
-                      {selectedComplaint.ai_confidence_score}% Confidence
+                      {selectedComplaint.ai_confidence_score}% <TranslatedText text="Confidence" />
                     </span>
                   )}
                 </div>
@@ -614,21 +636,23 @@ export default function UserDashboard() {
 
                 {selectedComplaint.feedback_helpful === null && (
                   <div className="pt-4 border-t border-red-200">
-                    <p className="text-sm text-gray-700 mb-2 font-medium">Was this response helpful?</p>
+                    <p className="text-sm text-gray-700 mb-2 font-medium">
+                      <TranslatedText text="Was this response helpful?" />
+                    </p>
                     <div className="flex gap-2">
                       <button
                         onClick={() => submitFeedback(selectedComplaint.id, true)}
                         className="flex-1 py-2 px-4 bg-white border-2 border-green-200 text-green-700 rounded-lg hover:bg-green-50 font-medium flex items-center justify-center gap-2 transition-all"
                       >
                         <ThumbsUp className="w-4 h-4" />
-                        Helpful
+                        <TranslatedText text="Helpful" />
                       </button>
                       <button
                         onClick={() => submitFeedback(selectedComplaint.id, false)}
                         className="flex-1 py-2 px-4 bg-white border-2 border-red-200 text-red-700 rounded-lg hover:bg-red-50 font-medium flex items-center justify-center gap-2 transition-all"
                       >
                         <ThumbsDown className="w-4 h-4" />
-                        Not Helpful
+                        <TranslatedText text="Not Helpful" />
                       </button>
                     </div>
                   </div>
@@ -639,7 +663,9 @@ export default function UserDashboard() {
                 <MessageThread complaintId={selectedComplaint.id} isAdmin={false} />
               </div>
 
-              <p className="text-xs text-gray-500 text-center">Complaint ID: {selectedComplaint.id}</p>
+              <p className="text-xs text-gray-500 text-center">
+                <TranslatedText text="Complaint ID" />: {selectedComplaint.id}
+              </p>
             </div>
           </div>
         </div>
