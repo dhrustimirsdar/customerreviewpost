@@ -8,6 +8,8 @@ import {
 import Analytics from './Analytics';
 import MessageThread from './MessageThread';
 import { supabase } from '../lib/supabase';
+import LanguageSelector from './LanguageSelector';
+import TranslatedText from './TranslatedText';
 
 interface Complaint {
   id: string;
@@ -208,6 +210,7 @@ export default function NewAdminDashboard() {
                 </p>
               </div>
               <div className="flex items-center gap-4">
+                <LanguageSelector />
                 <div className="flex items-center gap-2 bg-green-50 px-4 py-2 rounded-lg">
                   <Activity className="w-5 h-5 text-green-600" />
                   <span className="text-sm font-medium text-green-700">System Online</span>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { TranslationProvider } from './contexts/TranslationContext';
 import HomePage from './components/HomePage';
 import AuthPage from './components/AuthPage';
 import AdminLogin from './components/AdminLogin';
@@ -146,7 +147,9 @@ function Router() {
 function App() {
   return (
     <AuthProvider>
-      <Router />
+      <TranslationProvider>
+        <Router />
+      </TranslationProvider>
     </AuthProvider>
   );
 }

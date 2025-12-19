@@ -7,6 +7,8 @@ import {
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import MessageThread from './MessageThread';
+import LanguageSelector from './LanguageSelector';
+import TranslatedText from './TranslatedText';
 
 interface Complaint {
   id: string;
@@ -259,16 +261,19 @@ export default function UserDashboard() {
                 <p className="text-sm text-gray-600">{user?.email}</p>
               </div>
             </div>
-            <button
-              onClick={async () => {
-                await signOut();
-                window.location.href = '/';
-              }}
-              className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-300"
-            >
-              <LogOut className="w-5 h-5" />
-              <span>Sign Out</span>
-            </button>
+            <div className="flex items-center gap-3">
+              <LanguageSelector />
+              <button
+                onClick={async () => {
+                  await signOut();
+                  window.location.href = '/';
+                }}
+                className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-300"
+              >
+                <LogOut className="w-5 h-5" />
+                <span>Sign Out</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
