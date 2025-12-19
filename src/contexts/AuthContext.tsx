@@ -2,12 +2,15 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import type { User } from '@supabase/supabase-js';
 
+type LoginContext = 'admin' | 'user' | null;
+
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   isAdmin: boolean;
   checkingAdmin: boolean;
-  signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
+  loginContext: LoginContext;
+  signIn: (email: string, password: string, context: LoginContext) => Promise<{ error: Error | null }>;
   signUp: (email: string, password: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
 }
@@ -19,6 +22,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [checkingAdmin, setCheckingAdmin] = useState(false);
+  const [loginContext, setLoginContext] = useState<LoginContext>(null);
 
   const checkAdminStatus = async (userId: string) => {
     setCheckingAdmin(true);
@@ -39,6 +43,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
+    const storedContext = localStorage.getItem('loginContext') as LoginContext;
+    setLoginContext(storedContext);
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       if (session?.user) {
@@ -49,11 +56,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       (async () => {
-        setUser(session?.user ?? null);
         if (session?.user) {
+          setUser(session.user);
           await checkAdminStatus(session.user.id);
         } else {
+          setUser(null);
           setIsAdmin(false);
+          setLoginContext(null);
+          localStorage.removeItem('loginContext');
         }
       })();
     });
@@ -61,12 +71,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (email: string, password: string, context: LoginContext) => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { error, data } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
+
+      if (!error && data.user) {
+        if (context === 'admin') {
+          await checkAdminStatus(data.user.id);
+        }
+        setLoginContext(context);
+        if (context) {
+          localStorage.setItem('loginContext', context);
+        }
+      }
+
       return { error };
     } catch (error) {
       return { error: error as Error };
@@ -75,10 +96,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signUp = async (email: string, password: string) => {
     try {
-      const { error } = await supabase.auth.signUp({
+      const { error, data } = await supabase.auth.signUp({
         email,
         password,
       });
+
+      if (!error && data.user) {
+        setLoginContext('user');
+        localStorage.setItem('loginContext', 'user');
+      }
+
       return { error };
     } catch (error) {
       return { error: error as Error };
@@ -88,10 +115,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signOut = async () => {
     await supabase.auth.signOut();
     setIsAdmin(false);
+    setLoginContext(null);
+    localStorage.removeItem('loginContext');
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, isAdmin, checkingAdmin, signIn, signUp, signOut }}>
+    <AuthContext.Provider value={{ user, loading, isAdmin, checkingAdmin, loginContext, signIn, signUp, signOut }}>
       {children}
     </AuthContext.Provider>
   );

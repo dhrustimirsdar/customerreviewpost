@@ -16,7 +16,7 @@ export default function AuthPage() {
     setLoading(true);
 
     const { error } = isLogin
-      ? await signIn(email, password)
+      ? await signIn(email, password, 'user')
       : await signUp(email, password);
 
     if (error) {
@@ -155,9 +155,16 @@ export default function AuthPage() {
           </div>
 
           <div className="mt-8 pt-8 border-t border-gray-200">
-            <p className="text-center text-sm text-gray-500">
+            <p className="text-center text-sm text-gray-500 mb-4">
               By continuing, you agree to our Terms of Service and Privacy Policy
             </p>
+            <button
+              onClick={() => window.location.href = '/admin/login'}
+              className="w-full text-center text-xs text-gray-400 hover:text-slate-600 transition-colors duration-300 flex items-center justify-center gap-2 py-2"
+            >
+              <Shield className="w-3 h-3" />
+              <span>Admin Portal Access</span>
+            </button>
           </div>
         </div>
       </div>

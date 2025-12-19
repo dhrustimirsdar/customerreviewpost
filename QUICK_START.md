@@ -53,22 +53,30 @@ Only `swarnimbandekar9@gmail.com` should access the admin panel.
 ### Test User Flow
 1. Run `npm run dev`
 2. Open http://localhost:5173
-3. You'll see the beautiful login page
+3. You'll see the beautiful user login page
 4. Click **Sign Up**
 5. Create an account (email + password)
-6. You're logged in! See your user dashboard
+6. You're logged in to the **User Portal**
 7. Click **New Complaint** button
 8. Submit a test complaint
 9. Watch it appear with AI analysis and emojis
 
 ### Test Admin Flow
-1. Open http://localhost:5173/admin in a new tab
-2. Log in with your account
+1. Open http://localhost:5173/admin/login in a new tab
+2. Log in with **swarnimbandekar9@gmail.com**
 3. See the amazing admin dashboard with left navigation
 4. Click through Dashboard, Complaints, and Analytics tabs
 5. Click on a complaint to view details
 6. Test message threading
 7. Click "Resolve" to change status
+
+### Test Portal Separation
+1. Log in as regular user at `/`
+2. Try to navigate to `/admin`
+3. See "Wrong Portal" message
+4. Click "Sign Out & Use Admin Portal"
+5. Log in as admin at `/admin/login`
+6. Access admin dashboard successfully
 
 ---
 
@@ -131,18 +139,32 @@ Only `swarnimbandekar9@gmail.com` should access the admin panel.
 
 ## Important URLs
 
-- **User Dashboard**: http://localhost:5173
-- **Admin Dashboard**: http://localhost:5173/admin
+- **User Portal**: http://localhost:5173 (public sign up/login)
+- **Admin Login**: http://localhost:5173/admin/login (admin only)
+- **Admin Dashboard**: http://localhost:5173/admin (after admin login)
 - **Supabase Dashboard**: https://supabase.com/dashboard
 
 ---
 
-## Default Behavior
+## Portal Behavior
 
-- **All users** see the login page first
-- **After login**, regular URL shows user dashboard
-- **Admin users** can access `/admin` for admin panel
-- **Logout** button available in both dashboards
+### User Portal (`/`)
+- Anyone can sign up and create an account
+- Log in to access user dashboard
+- View and submit own complaints
+- Cannot access admin panel
+
+### Admin Portal (`/admin/login`)
+- Separate login page with dark theme
+- Only admins can access (swarnimbandekar9@gmail.com)
+- After login, access admin dashboard at `/admin`
+- Cannot access user portal without switching
+
+### Portal Separation
+- Sessions are portal-specific
+- Logging into user portal does NOT give admin access
+- Logging into admin portal does NOT give user access
+- Must sign out to switch between portals
 
 ---
 
@@ -160,6 +182,8 @@ When you're ready to deploy:
 ## Need Help?
 
 Check these files for detailed info:
+- `SEPARATE_PORTALS_GUIDE.md` - How the separate login portals work
+- `ADMIN_ACCESS_SETUP.md` - Setting up admin access
 - `DATABASE_UPDATE_INSTRUCTIONS.md` - Database setup
 - `EDGE_FUNCTIONS_UPDATE.md` - Edge function updates
 - `IMPLEMENTATION_SUMMARY.md` - Complete feature list
