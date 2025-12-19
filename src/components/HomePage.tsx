@@ -200,7 +200,7 @@ export default function HomePage() {
               onClick={handleGetStarted}
               className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2.5 rounded-xl text-sm font-medium shadow-lg w-fit"
             >
-              Deploy Now
+              Login
             </ShimmerButton>
           </nav>
         </div>
