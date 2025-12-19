@@ -25,11 +25,11 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-red-950 via-red-900 to-slate-900 flex items-center justify-center p-4">
       <div className="absolute top-6 left-6">
         <button
           onClick={() => window.location.href = '/'}
-          className="flex items-center gap-2 text-slate-300 hover:text-white transition-colors"
+          className="flex items-center gap-2 text-red-100 hover:text-white transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
           <span>Back to User Portal</span>
@@ -38,7 +38,7 @@ export default function AdminLogin() {
 
       <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
         <div className="flex items-center justify-center mb-8">
-          <div className="bg-gradient-to-br from-slate-700 to-slate-900 p-4 rounded-xl shadow-lg">
+          <div className="bg-gradient-to-br from-red-700 to-red-900 p-4 rounded-xl shadow-lg">
             <Shield className="w-10 h-10 text-white" />
           </div>
         </div>
@@ -68,7 +68,7 @@ export default function AdminLogin() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent transition-all"
               placeholder="admin@example.com"
             />
           </div>
@@ -83,7 +83,7 @@ export default function AdminLogin() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent transition-all"
               placeholder="Enter your admin password"
             />
           </div>
@@ -91,7 +91,7 @@ export default function AdminLogin() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-slate-700 to-slate-900 text-white py-3 rounded-lg font-semibold hover:from-slate-800 hover:to-black transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+            className="w-full bg-gradient-to-r from-red-700 to-red-900 text-white py-3 rounded-lg font-semibold hover:from-red-800 hover:to-red-950 transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
           >
             {loading ? (
               <span className="flex items-center justify-center gap-2">
@@ -105,8 +105,8 @@ export default function AdminLogin() {
         </form>
 
         <div className="mt-8 pt-6 border-t border-gray-200">
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-            <p className="text-xs text-amber-800 font-medium text-center">
+          <div className="bg-amber-50 border border-amber-300 rounded-lg p-4">
+            <p className="text-xs text-amber-900 font-medium text-center">
               This portal is restricted to authorized administrators only
             </p>
           </div>

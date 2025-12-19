@@ -28,17 +28,17 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 via-orange-50 to-amber-50 flex items-center justify-center p-4 relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-indigo-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-red-400/20 to-orange-400/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-orange-400/20 to-amber-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
       </div>
 
       <div className="w-full max-w-6xl grid md:grid-cols-2 gap-8 relative z-10">
         <div className="hidden md:flex flex-col justify-center p-12 text-white">
           <div className="space-y-8">
             <div className="space-y-4">
-              <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <h1 className="text-5xl font-bold bg-gradient-to-r from-red-700 to-orange-600 bg-clip-text text-transparent">
                 Indian Postal Service
               </h1>
               <p className="text-xl text-gray-700">
@@ -48,7 +48,7 @@ export default function AuthPage() {
 
             <div className="space-y-6">
               <div className="flex items-start space-x-4 group">
-                <div className="p-3 bg-blue-500 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                <div className="p-3 bg-red-600 rounded-xl group-hover:scale-110 transition-transform duration-300">
                   <Sparkles className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -58,7 +58,7 @@ export default function AuthPage() {
               </div>
 
               <div className="flex items-start space-x-4 group">
-                <div className="p-3 bg-purple-500 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                <div className="p-3 bg-orange-500 rounded-xl group-hover:scale-110 transition-transform duration-300">
                   <Shield className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -68,7 +68,7 @@ export default function AuthPage() {
               </div>
 
               <div className="flex items-start space-x-4 group">
-                <div className="p-3 bg-indigo-500 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                <div className="p-3 bg-amber-600 rounded-xl group-hover:scale-110 transition-transform duration-300">
                   <Zap className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -82,7 +82,7 @@ export default function AuthPage() {
 
         <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 backdrop-blur-sm bg-white/90">
           <div className="mb-8 text-center">
-            <div className="inline-block p-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl mb-4 transform hover:rotate-6 transition-transform duration-300">
+            <div className="inline-block p-4 bg-gradient-to-r from-red-600 to-orange-500 rounded-2xl mb-4 transform hover:rotate-6 transition-transform duration-300">
               <User className="w-8 h-8 text-white" />
             </div>
             <h2 className="text-3xl font-bold text-gray-800 mb-2">
@@ -97,12 +97,12 @@ export default function AuthPage() {
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">Email Address</label>
               <div className="relative group">
-                <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
+                <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-red-600 transition-colors" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 outline-none transition-all duration-300"
+                  className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-600 focus:ring-4 focus:ring-red-100 outline-none transition-all duration-300"
                   placeholder="your.email@example.com"
                   required
                 />
@@ -112,12 +112,12 @@ export default function AuthPage() {
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">Password</label>
               <div className="relative group">
-                <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
+                <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-red-600 transition-colors" />
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 outline-none transition-all duration-300"
+                  className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-600 focus:ring-4 focus:ring-red-100 outline-none transition-all duration-300"
                   placeholder="••••••••"
                   required
                   minLength={6}
@@ -134,7 +134,7 @@ export default function AuthPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-4 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 group"
+              className="w-full bg-gradient-to-r from-red-600 to-orange-500 text-white py-4 rounded-xl font-semibold hover:from-red-700 hover:to-orange-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 group"
             >
               <span>{loading ? 'Please wait...' : (isLogin ? 'Sign In' : 'Create Account')}</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -147,7 +147,7 @@ export default function AuthPage() {
                 setIsLogin(!isLogin);
                 setError('');
               }}
-              className="text-gray-600 hover:text-blue-600 transition-colors duration-300"
+              className="text-gray-600 hover:text-red-700 transition-colors duration-300"
             >
               {isLogin ? "Don't have an account? " : "Already have an account? "}
               <span className="font-semibold underline">

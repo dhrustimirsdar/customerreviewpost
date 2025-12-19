@@ -118,24 +118,24 @@ export default function NewAdminDashboard() {
   ];
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-slate-50 to-blue-50 overflow-hidden">
-      <aside className={`bg-gradient-to-b from-slate-900 to-slate-800 text-white transition-all duration-300 ${sidebarOpen ? 'w-64' : 'w-20'} flex flex-col shadow-2xl`}>
-        <div className="p-6 border-b border-slate-700">
+    <div className="flex h-screen bg-gradient-to-br from-red-50 to-orange-50 overflow-hidden">
+      <aside className={`bg-gradient-to-b from-red-950 to-red-900 text-white transition-all duration-300 ${sidebarOpen ? 'w-64' : 'w-20'} flex flex-col shadow-2xl`}>
+        <div className="p-6 border-b border-red-800">
           <div className="flex items-center justify-between">
             {sidebarOpen && (
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg">
+                <div className="p-2 bg-gradient-to-r from-red-600 to-orange-500 rounded-lg">
                   <Package className="w-6 h-6" />
                 </div>
                 <div>
                   <h2 className="font-bold text-lg">Admin</h2>
-                  <p className="text-xs text-slate-400">Control Panel</p>
+                  <p className="text-xs text-red-200">Control Panel</p>
                 </div>
               </div>
             )}
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
+              className="p-2 hover:bg-red-800 rounded-lg transition-colors"
             >
               <Menu className="w-5 h-5" />
             </button>
@@ -152,8 +152,8 @@ export default function NewAdminDashboard() {
                 onClick={() => setActiveTab(item.id as any)}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
                   isActive
-                    ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg scale-105'
-                    : 'text-slate-300 hover:bg-slate-700 hover:text-white'
+                    ? 'bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-lg scale-105'
+                    : 'text-red-100 hover:bg-red-800 hover:text-white'
                 }`}
               >
                 <Icon className="w-5 h-5 flex-shrink-0" />
@@ -164,13 +164,13 @@ export default function NewAdminDashboard() {
           })}
         </nav>
 
-        <div className="p-4 border-t border-slate-700">
+        <div className="p-4 border-t border-red-800">
           <div className={`${sidebarOpen ? 'mb-4' : ''}`}>
             {sidebarOpen && (
-              <div className="bg-slate-700 rounded-lg p-3 mb-4">
+              <div className="bg-red-800 rounded-lg p-3 mb-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <Users className="w-4 h-4 text-slate-400" />
-                  <span className="text-xs text-slate-400">Logged in as</span>
+                  <Users className="w-4 h-4 text-red-200" />
+                  <span className="text-xs text-red-200">Logged in as</span>
                 </div>
                 <p className="text-sm font-medium truncate">{user?.email}</p>
               </div>
@@ -181,7 +181,7 @@ export default function NewAdminDashboard() {
               await signOut();
               window.location.href = '/admin/login';
             }}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-red-500 hover:text-white transition-all duration-300 ${!sidebarOpen && 'justify-center'}`}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-100 hover:bg-red-500 hover:text-white transition-all duration-300 ${!sidebarOpen && 'justify-center'}`}
           >
             <LogOut className="w-5 h-5 flex-shrink-0" />
             {sidebarOpen && <span className="font-medium">Sign Out</span>}
@@ -219,10 +219,10 @@ export default function NewAdminDashboard() {
           {activeTab === 'dashboard' && (
             <div className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="bg-white rounded-2xl shadow-xl p-6 border-l-4 border-blue-500 transform hover:scale-105 transition-all duration-300">
+                <div className="bg-white rounded-2xl shadow-xl p-6 border-l-4 border-red-600 transform hover:scale-105 transition-all duration-300">
                   <div className="flex items-center justify-between mb-4">
-                    <div className="p-3 bg-blue-100 rounded-xl">
-                      <Package className="w-8 h-8 text-blue-600" />
+                    <div className="p-3 bg-red-100 rounded-xl">
+                      <Package className="w-8 h-8 text-red-600" />
                     </div>
                     <span className="text-2xl">📊</span>
                   </div>
@@ -272,19 +272,19 @@ export default function NewAdminDashboard() {
                 <div className="bg-white rounded-2xl shadow-xl p-6">
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-xl font-bold text-gray-900">Performance Metrics</h3>
-                    <Target className="w-6 h-6 text-purple-600" />
+                    <Target className="w-6 h-6 text-orange-600" />
                   </div>
                   <div className="space-y-6">
                     <div>
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-sm font-medium text-gray-700">Resolution Rate</span>
-                        <span className="text-sm font-bold text-purple-600">
+                        <span className="text-sm font-bold text-orange-600">
                           {Math.round((stats.resolved / Math.max(stats.total, 1)) * 100)}%
                         </span>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
                         <div
-                          className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all duration-1000 animate-pulse"
+                          className="h-full bg-gradient-to-r from-orange-500 to-amber-500 rounded-full transition-all duration-1000 animate-pulse"
                           style={{ width: `${(stats.resolved / Math.max(stats.total, 1)) * 100}%` }}
                         ></div>
                       </div>
@@ -308,16 +308,16 @@ export default function NewAdminDashboard() {
                     <div>
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-sm font-medium text-gray-700">Response Time</span>
-                        <span className="text-sm font-bold text-blue-600">{stats.avgResponseTime}</span>
+                        <span className="text-sm font-bold text-red-600">{stats.avgResponseTime}</span>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                        <div className="h-full w-3/4 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full transition-all duration-1000"></div>
+                        <div className="h-full w-3/4 bg-gradient-to-r from-red-500 to-orange-500 rounded-full transition-all duration-1000"></div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl shadow-xl p-6 text-white">
+                <div className="bg-gradient-to-br from-red-600 to-orange-600 rounded-2xl shadow-xl p-6 text-white">
                   <h3 className="text-xl font-bold mb-4">Quick Actions</h3>
                   <div className="space-y-3">
                     <button
@@ -328,7 +328,7 @@ export default function NewAdminDashboard() {
                         <Package className="w-6 h-6" />
                         <div>
                           <p className="font-semibold">View All Complaints</p>
-                          <p className="text-xs text-blue-100">Manage pending items</p>
+                          <p className="text-xs text-red-100">Manage pending items</p>
                         </div>
                       </div>
                     </button>
@@ -340,7 +340,7 @@ export default function NewAdminDashboard() {
                         <BarChart3 className="w-6 h-6" />
                         <div>
                           <p className="font-semibold">View Analytics</p>
-                          <p className="text-xs text-blue-100">Detailed insights</p>
+                          <p className="text-xs text-red-100">Detailed insights</p>
                         </div>
                       </div>
                     </button>
@@ -355,7 +355,7 @@ export default function NewAdminDashboard() {
                     <div
                       key={complaint.id}
                       onClick={() => setSelectedComplaint(complaint)}
-                      className="flex items-center justify-between p-4 hover:bg-gray-50 rounded-xl cursor-pointer transition-all border-2 border-transparent hover:border-blue-200"
+                      className="flex items-center justify-between p-4 hover:bg-gray-50 rounded-xl cursor-pointer transition-all border-2 border-transparent hover:border-red-200"
                     >
                       <div className="flex items-center gap-4">
                         <span className="text-3xl">{getEmojiForCategory(complaint.category)}</span>
@@ -384,7 +384,7 @@ export default function NewAdminDashboard() {
                   <div className="flex items-center gap-2 w-full md:w-auto">
                     <button
                       onClick={() => setFilter('all')}
-                      className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 ${filter === 'all' ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg scale-105' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                      className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 ${filter === 'all' ? 'bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-lg scale-105' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
                     >
                       All ({complaints.length})
                     </button>
@@ -409,7 +409,7 @@ export default function NewAdminDashboard() {
                       placeholder="Search complaints..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 outline-none transition-all"
+                      className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-600 focus:ring-4 focus:ring-red-100 outline-none transition-all"
                     />
                   </div>
                 </div>
@@ -424,7 +424,7 @@ export default function NewAdminDashboard() {
                     filteredComplaints.map((complaint) => (
                       <div
                         key={complaint.id}
-                        className="border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-300 hover:shadow-2xl transition-all duration-300 cursor-pointer"
+                        className="border-2 border-gray-200 rounded-2xl p-6 hover:border-red-300 hover:shadow-2xl transition-all duration-300 cursor-pointer"
                         onClick={() => setSelectedComplaint(complaint)}
                       >
                         <div className="flex items-start justify-between">
@@ -489,12 +489,12 @@ export default function NewAdminDashboard() {
       {selectedComplaint && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
           <div className="bg-white rounded-3xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 bg-gradient-to-r from-blue-500 to-purple-500 p-6 flex items-center justify-between rounded-t-3xl text-white">
+            <div className="sticky top-0 bg-gradient-to-r from-red-600 to-orange-500 p-6 flex items-center justify-between rounded-t-3xl text-white">
               <div className="flex items-center gap-4">
                 <span className="text-5xl">{getEmojiForCategory(selectedComplaint.category)}</span>
                 <div>
                   <h2 className="text-2xl font-bold">{selectedComplaint.category}</h2>
-                  <p className="text-sm text-blue-100">ID: {selectedComplaint.id.slice(0, 8)}</p>
+                  <p className="text-sm text-red-100">ID: {selectedComplaint.id.slice(0, 8)}</p>
                 </div>
               </div>
               <button
@@ -506,9 +506,9 @@ export default function NewAdminDashboard() {
             </div>
 
             <div className="p-8 space-y-6">
-              <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl p-6 border-2 border-gray-200">
+              <div className="bg-gradient-to-r from-gray-50 to-red-50 rounded-2xl p-6 border-2 border-gray-200">
                 <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                  <MessageSquare className="w-5 h-5 text-blue-600" />
+                  <MessageSquare className="w-5 h-5 text-red-600" />
                   Complaint Details
                 </h3>
                 <p className="text-gray-800 leading-relaxed">{selectedComplaint.complaint_text}</p>
@@ -537,17 +537,17 @@ export default function NewAdminDashboard() {
                 </div>
                 <div className="bg-gray-50 rounded-xl p-4 border-2 border-gray-200">
                   <p className="text-xs text-gray-600 mb-2">AI Confidence</p>
-                  <p className="text-2xl font-bold text-blue-600">{selectedComplaint.ai_confidence_score}%</p>
+                  <p className="text-2xl font-bold text-red-600">{selectedComplaint.ai_confidence_score}%</p>
                 </div>
               </div>
 
-              <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 border-2 border-blue-300">
+              <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-2xl p-6 border-2 border-red-300">
                 <div className="flex items-center justify-between mb-4">
                   <h4 className="font-bold text-gray-900 flex items-center gap-2">
-                    <Brain className="w-6 h-6 text-blue-600" />
+                    <Brain className="w-6 h-6 text-red-600" />
                     AI-Generated Response
                   </h4>
-                  <span className="px-3 py-1 bg-blue-200 text-blue-700 rounded-full text-xs font-bold">
+                  <span className="px-3 py-1 bg-red-200 text-red-700 rounded-full text-xs font-bold">
                     AI POWERED
                   </span>
                 </div>
@@ -556,7 +556,7 @@ export default function NewAdminDashboard() {
                 </p>
 
                 {selectedComplaint.feedback_helpful !== null && (
-                  <div className="pt-4 border-t border-blue-200 flex items-center gap-2">
+                  <div className="pt-4 border-t border-red-200 flex items-center gap-2">
                     <span className="text-sm text-gray-700">User Feedback:</span>
                     {selectedComplaint.feedback_helpful ? (
                       <span className="flex items-center gap-1 text-green-700 font-bold">

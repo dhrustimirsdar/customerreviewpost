@@ -153,9 +153,9 @@ export default function UserDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-red-600 mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading your dashboard...</p>
         </div>
       </div>
@@ -163,12 +163,12 @@ export default function UserDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 via-orange-50 to-amber-50">
       <div className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="p-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl">
+              <div className="p-3 bg-gradient-to-r from-red-600 to-orange-500 rounded-xl">
                 <Package className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -192,14 +192,14 @@ export default function UserDashboard() {
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-2xl shadow-lg p-6 transform hover:scale-105 transition-transform duration-300 border-l-4 border-blue-500">
+          <div className="bg-white rounded-2xl shadow-lg p-6 transform hover:scale-105 transition-transform duration-300 border-l-4 border-red-600">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600 mb-1">Total Complaints</p>
                 <p className="text-3xl font-bold text-gray-900">{stats.total}</p>
               </div>
-              <div className="p-4 bg-blue-100 rounded-xl">
-                <BarChart3 className="w-8 h-8 text-blue-600" />
+              <div className="p-4 bg-red-100 rounded-xl">
+                <BarChart3 className="w-8 h-8 text-red-600" />
               </div>
             </div>
           </div>
@@ -246,13 +246,13 @@ export default function UserDashboard() {
             <div className="flex items-center gap-2 w-full md:w-auto">
               <button
                 onClick={() => setFilter('all')}
-                className={`px-4 py-2 rounded-lg font-medium transition-all ${filter === 'all' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                className={`px-4 py-2 rounded-lg font-medium transition-all ${filter === 'all' ? 'bg-red-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
               >
                 All
               </button>
               <button
                 onClick={() => setFilter('pending')}
-                className={`px-4 py-2 rounded-lg font-medium transition-all ${filter === 'pending' ? 'bg-amber-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                className={`px-4 py-2 rounded-lg font-medium transition-all ${filter === 'pending' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
               >
                 Pending
               </button>
@@ -271,13 +271,13 @@ export default function UserDashboard() {
                 placeholder="Search complaints..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-4 focus:ring-blue-100 outline-none transition-all"
+                className="w-full pl-10 pr-4 py-2 border-2 border-gray-200 rounded-lg focus:border-red-600 focus:ring-4 focus:ring-red-100 outline-none transition-all"
               />
             </div>
 
             <button
               onClick={() => setShowNewComplaint(true)}
-              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-semibold hover:from-blue-600 hover:to-purple-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-red-600 to-orange-500 text-white rounded-lg font-semibold hover:from-red-700 hover:to-orange-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
             >
               <Plus className="w-5 h-5" />
               New Complaint
@@ -291,7 +291,7 @@ export default function UserDashboard() {
                 <p className="text-gray-500 text-lg">No complaints found</p>
                 <button
                   onClick={() => setShowNewComplaint(true)}
-                  className="mt-4 text-blue-600 hover:text-blue-700 font-medium"
+                  className="mt-4 text-red-600 hover:text-red-700 font-medium"
                 >
                   Submit your first complaint
                 </button>
@@ -300,7 +300,7 @@ export default function UserDashboard() {
               filteredComplaints.map((complaint) => (
                 <div
                   key={complaint.id}
-                  className="border-2 border-gray-200 rounded-xl p-6 hover:border-blue-300 hover:shadow-lg transition-all duration-300 cursor-pointer"
+                  className="border-2 border-gray-200 rounded-xl p-6 hover:border-red-300 hover:shadow-lg transition-all duration-300 cursor-pointer"
                   onClick={() => setSelectedComplaint(complaint)}
                 >
                   <div className="flex items-start justify-between mb-4">
@@ -336,7 +336,7 @@ export default function UserDashboard() {
                         </span>
                       )}
                     </div>
-                    <button className="flex items-center gap-1 text-blue-600 hover:text-blue-700 font-medium">
+                    <button className="flex items-center gap-1 text-red-600 hover:text-red-700 font-medium">
                       View Details
                       <ChevronRight className="w-4 h-4" />
                     </button>
@@ -353,7 +353,7 @@ export default function UserDashboard() {
           <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full p-8 max-h-[90vh] overflow-y-auto transform animate-scale-in">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
-                <div className="p-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl">
+                <div className="p-3 bg-gradient-to-r from-red-600 to-orange-500 rounded-xl">
                   <Plus className="w-6 h-6 text-white" />
                 </div>
                 <h2 className="text-2xl font-bold text-gray-900">New Complaint</h2>
@@ -375,7 +375,7 @@ export default function UserDashboard() {
                   rows={6}
                   value={complaintText}
                   onChange={(e) => setComplaintText(e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 outline-none transition-all resize-none"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-600 focus:ring-4 focus:ring-red-100 outline-none transition-all resize-none"
                   placeholder="Please provide detailed information about your complaint..."
                   required
                 />
@@ -392,7 +392,7 @@ export default function UserDashboard() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl font-semibold hover:from-blue-600 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all"
+                  className="flex-1 px-6 py-3 bg-gradient-to-r from-red-600 to-orange-500 text-white rounded-xl font-semibold hover:from-red-700 hover:to-orange-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all"
                 >
                   {isSubmitting ? (
                     <>
@@ -456,14 +456,14 @@ export default function UserDashboard() {
                 </div>
               </div>
 
-              <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 border-2 border-blue-200">
+              <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-2xl p-6 border-2 border-red-200">
                 <div className="flex items-center justify-between mb-4">
                   <h4 className="font-semibold text-gray-900 flex items-center gap-2">
-                    <Brain className="w-5 h-5 text-blue-600" />
+                    <Brain className="w-5 h-5 text-red-600" />
                     AI-Generated Response
                   </h4>
                   {selectedComplaint.ai_confidence_score && (
-                    <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
+                    <span className="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-medium">
                       {selectedComplaint.ai_confidence_score}% Confidence
                     </span>
                   )}
@@ -471,7 +471,7 @@ export default function UserDashboard() {
                 <p className="text-gray-800 mb-4">{selectedComplaint.ai_response}</p>
 
                 {selectedComplaint.feedback_helpful === null && (
-                  <div className="pt-4 border-t border-blue-200">
+                  <div className="pt-4 border-t border-red-200">
                     <p className="text-sm text-gray-700 mb-2 font-medium">Was this response helpful?</p>
                     <div className="flex gap-2">
                       <button
