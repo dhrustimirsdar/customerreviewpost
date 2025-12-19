@@ -185,9 +185,7 @@ export default function HomePage() {
             <a href="#" className="text-black/70 hover:text-black transition-colors">
               Features
             </a>
-            <a href="#" className="text-black/70 hover:text-black transition-colors">
-              Pricing
-            </a>
+            
             <a href="#" className="text-black/70 hover:text-black transition-colors">
               About us
             </a>
