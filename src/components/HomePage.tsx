@@ -177,7 +177,7 @@ export default function HomePage() {
           onClick={handleGetStarted}
           className="hidden md:flex bg-orange-500 hover:bg-orange-600 text-white px-4 lg:px-6 py-2 rounded-xl text-sm lg:text-base font-medium shadow-lg"
         >
-          Deploy Now
+          Login
         </ShimmerButton>
       </header>
 
