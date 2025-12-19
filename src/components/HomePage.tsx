@@ -221,10 +221,10 @@ export default function HomePage() {
         </h1>
 
         <p className="text-black/70 text-sm sm:text-base md:text-sm lg:text-2xl mb-6 sm:mb-8 max-w-2xl text-pretty">
-          Join a Community of Digital Artists
+          Automated, prioritized, and transparent
           <br className="hidden sm:block" />
           <span className="sm:hidden"> </span>
-          Sharing Breathtaking Landscapes.
+          grievance resolution.
         </p>
 
         <Button
