@@ -24,13 +24,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [checkingAdmin, setCheckingAdmin] = useState(false);
   const [loginContext, setLoginContext] = useState<LoginContext>(null);
 
-  const checkAdminStatus = async (userId: string) => {
+  const checkAdminStatus = async (userEmail: string) => {
     setCheckingAdmin(true);
     try {
       const { data, error } = await supabase
-        .from('admins')
+        .from('admin_users')
         .select('id')
-        .eq('user_id', userId)
+        .eq('email', userEmail)
         .maybeSingle();
 
       setIsAdmin(!!data && !error);
@@ -48,17 +48,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
-      if (session?.user) {
-        checkAdminStatus(session.user.id);
+      if (session?.user?.email) {
+        checkAdminStatus(session.user.email);
       }
       setLoading(false);
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       (async () => {
-        if (session?.user) {
+        if (session?.user?.email) {
           setUser(session.user);
-          await checkAdminStatus(session.user.id);
+          await checkAdminStatus(session.user.email);
         } else {
           setUser(null);
           setIsAdmin(false);
@@ -78,9 +78,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         password,
       });
 
-      if (!error && data.user) {
+      if (!error && data.user?.email) {
         if (context === 'admin') {
-          await checkAdminStatus(data.user.id);
+          await checkAdminStatus(data.user.email);
         }
         setLoginContext(context);
         if (context) {
