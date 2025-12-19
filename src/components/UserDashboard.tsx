@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import {
   Send, CheckCircle2, Clock, TrendingUp, ThumbsUp, ThumbsDown, Brain, Info,
@@ -20,6 +20,14 @@ interface Complaint {
   status: string;
   feedback_helpful?: boolean | null;
   created_at: string;
+  phone_number?: string | null;
+  tracking_id?: string | null;
+}
+
+declare global {
+  interface Window {
+    grecaptcha: any;
+  }
 }
 
 export default function UserDashboard() {
@@ -34,10 +42,46 @@ export default function UserDashboard() {
   const [selectedComplaint, setSelectedComplaint] = useState<Complaint | null>(null);
   const [filter, setFilter] = useState<'all' | 'pending' | 'resolved'>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const recaptchaRef = useRef<number | null>(null);
 
   useEffect(() => {
     fetchUserComplaints();
   }, [user]);
+
+  useEffect(() => {
+    if (showNewComplaint) {
+      const loadRecaptcha = () => {
+        if (window.grecaptcha && window.grecaptcha.render) {
+          if (recaptchaRef.current === null) {
+            const recaptchaElement = document.getElementById('recaptcha-container-modal');
+            if (recaptchaElement && recaptchaElement.children.length === 0) {
+              try {
+                recaptchaRef.current = window.grecaptcha.render('recaptcha-container-modal', {
+                  sitekey: import.meta.env.VITE_RECAPTCHA_SITE_KEY || '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI',
+                  size: 'normal',
+                });
+              } catch (err) {
+                console.error('reCAPTCHA render error:', err);
+              }
+            }
+          }
+        }
+      };
+
+      if (window.grecaptcha) {
+        loadRecaptcha();
+      } else {
+        const interval = setInterval(() => {
+          if (window.grecaptcha) {
+            loadRecaptcha();
+            clearInterval(interval);
+          }
+        }, 100);
+
+        return () => clearInterval(interval);
+      }
+    }
+  }, [showNewComplaint]);
 
   const fetchUserComplaints = async () => {
     if (!user) return;
@@ -62,6 +106,27 @@ export default function UserDashboard() {
     e.preventDefault();
     if (!complaintText.trim()) return;
 
+    let recaptchaToken = '';
+    const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+
+    if (siteKey && siteKey !== '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI') {
+      try {
+        if (window.grecaptcha && recaptchaRef.current !== null) {
+          recaptchaToken = window.grecaptcha.getResponse(recaptchaRef.current);
+          if (!recaptchaToken) {
+            alert('Please complete the reCAPTCHA verification');
+            return;
+          }
+        }
+      } catch (err) {
+        console.error('reCAPTCHA error:', err);
+        alert('reCAPTCHA verification failed. Please refresh and try again.');
+        return;
+      }
+    } else {
+      recaptchaToken = 'test-token';
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -78,6 +143,7 @@ export default function UserDashboard() {
           complaint_text: complaintText,
           phone_number: phoneNumber || null,
           tracking_id: trackingId || null,
+          recaptcha_token: recaptchaToken,
         }),
       });
 
@@ -89,9 +155,18 @@ export default function UserDashboard() {
       setPhoneNumber('');
       setTrackingId('');
       setShowNewComplaint(false);
+
+      if (window.grecaptcha && recaptchaRef.current !== null) {
+        window.grecaptcha.reset(recaptchaRef.current);
+      }
+      recaptchaRef.current = null;
+
       fetchUserComplaints();
     } catch (error) {
       console.error('Error submitting complaint:', error);
+      if (window.grecaptcha && recaptchaRef.current !== null) {
+        window.grecaptcha.reset(recaptchaRef.current);
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -423,6 +498,10 @@ export default function UserDashboard() {
                 </div>
               </div>
 
+              <div className="flex justify-center">
+                <div id="recaptcha-container-modal"></div>
+              </div>
+
               <div className="flex gap-3">
                 <button
                   type="button"
@@ -477,6 +556,22 @@ export default function UserDashboard() {
               <div className="bg-gray-50 rounded-2xl p-6">
                 <h3 className="font-semibold text-gray-900 mb-2">Your Complaint</h3>
                 <p className="text-gray-700">{selectedComplaint.complaint_text}</p>
+                {(selectedComplaint.phone_number || selectedComplaint.tracking_id) && (
+                  <div className="mt-4 pt-4 border-t border-gray-300 space-y-2">
+                    {selectedComplaint.phone_number && (
+                      <p className="text-sm text-gray-600 flex items-center gap-2">
+                        <Phone className="w-4 h-4 text-red-600" />
+                        Phone: {selectedComplaint.phone_number}
+                      </p>
+                    )}
+                    {selectedComplaint.tracking_id && (
+                      <p className="text-sm text-gray-600 flex items-center gap-2">
+                        <Package className="w-4 h-4 text-red-600" />
+                        Tracking ID: {selectedComplaint.tracking_id}
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-3 gap-4">

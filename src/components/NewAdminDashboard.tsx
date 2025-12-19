@@ -3,7 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import {
   LayoutDashboard, CheckCircle2, Clock, AlertCircle, ThumbsUp, ThumbsDown,
   LogOut, BarChart3, MessageSquare, Brain, Info, Eye, X, Package, TrendingUp,
-  Search, Filter, Users, Settings, Menu, ChevronRight, Activity, Target
+  Search, Filter, Users, Settings, Menu, ChevronRight, Activity, Target, Phone
 } from 'lucide-react';
 import Analytics from './Analytics';
 import MessageThread from './MessageThread';
@@ -22,6 +22,8 @@ interface Complaint {
   feedback_helpful: boolean | null;
   created_at: string;
   user_id: string;
+  phone_number?: string | null;
+  tracking_id?: string | null;
 }
 
 export default function NewAdminDashboard() {
@@ -512,9 +514,23 @@ export default function NewAdminDashboard() {
                   Complaint Details
                 </h3>
                 <p className="text-gray-800 leading-relaxed">{selectedComplaint.complaint_text}</p>
-                <p className="text-sm text-gray-500 mt-4">
-                  Submitted: {new Date(selectedComplaint.created_at).toLocaleString()}
-                </p>
+                <div className="mt-4 space-y-2">
+                  <p className="text-sm text-gray-500">
+                    Submitted: {new Date(selectedComplaint.created_at).toLocaleString()}
+                  </p>
+                  {selectedComplaint.phone_number && (
+                    <p className="text-sm text-gray-700 flex items-center gap-2">
+                      <Phone className="w-4 h-4 text-red-600" />
+                      Phone: {selectedComplaint.phone_number}
+                    </p>
+                  )}
+                  {selectedComplaint.tracking_id && (
+                    <p className="text-sm text-gray-700 flex items-center gap-2">
+                      <Package className="w-4 h-4 text-red-600" />
+                      Tracking ID: {selectedComplaint.tracking_id}
+                    </p>
+                  )}
+                </div>
               </div>
 
               <div className="grid grid-cols-4 gap-4">
